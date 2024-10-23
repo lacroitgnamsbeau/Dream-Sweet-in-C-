@@ -1,7 +1,7 @@
 # Dream-Sweet-in-C++
 # TASK-TRACK RPG
 
-Members: Calvin Pugay, Mai Tao, Louise Santos
+Members: Calvin Pugay, Mai Thao, Louise Santos
 
 This will be our github repository for the project in CSCE A201.
 
