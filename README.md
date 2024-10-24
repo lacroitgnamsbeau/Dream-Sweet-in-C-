@@ -28,11 +28,11 @@ We can add some skills to those weapons too like
   3. Eraser - Skill: Nullify incoming damage for a limited amount of time
 
 Execution (subject to change, just rough ideas):
-  Task name - string user input
-  Difficulty - integer user input
-  Timer - find out how to make a timer (pause/unpause function is optional)
-  Fail/Succeed task - probably a bool value, user says if task was failed or succeeded, failed if time runs out
-  Skill points - Gained if task success, lost/no gain if task failed (amount based on difficulty?)
-  Attributes - multiple int variables (attack, defense, agility, or even weapon stats)
-  Weapons/armor/special - Weapons can increase/multiply attack, armor increases/multiplies defense, special abilities do other things to skills
-  Stages/Bosses: Checks if certain attributes are met. User passes if attributes are met, user fails if attributes are not met.
+  1. Task name - string user input
+  2. Difficulty - integer user input
+  3. Timer - find out how to make a timer (pause/unpause function is optional)
+  4. Fail/Succeed task - probably a bool value, user says if task was failed or succeeded, failed if time runs out
+  5. Skill points - Gained if task success, lost/no gain if task failed (amount based on difficulty?)
+  6. Attributes - multiple int variables (attack, defense, agility, or even weapon stats)
+  7. Weapons/armor/special - Weapons can increase/multiply attack, armor increases/multiplies defense, special abilities do other things to skills
+  8. Stages/Bosses: Checks if certain attributes are met. User passes if attributes are met, user fails if attributes are not met.
