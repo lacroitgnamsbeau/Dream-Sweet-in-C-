@@ -1,5 +1,5 @@
 #include <iostream>
-#include <SDL2/SDL.h>
+#include <sdl2/sdl.h>
 using namespace std;
 
 const int WIDTH = 800, HEIGHT = 600;
