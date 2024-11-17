@@ -9,7 +9,7 @@ using namespace std;
 void viewStats(int numStats, int attributes[]);
 void viewCompleted();
 void shop();
-void createTask();
+int createTask(string &newtask, vector<string> AllTasks, int &diff);
 void casino();
 void menu();
 void doTask();
@@ -18,7 +18,7 @@ int getChoice(); // these definitions are subject to change, function types or a
 int main() // (view stats, view completed tasks, [casino], shop, make a new task, do a task)
 {
     const int ATT = 5, MAX_STAT = 100; // these can be changed if want
-    int choice, money, attributes[ATT] = {0};
+    int choice, money, diff, attributes[ATT] = {0};
     vector<string> AllTasks;
     string newTask = "";
     	do
@@ -37,7 +37,7 @@ int main() // (view stats, view completed tasks, [casino], shop, make a new task
 		case 3: shop();
 			break;
 
-		case 4: createTask();
+		case 4: createTask(newTask, vector<string> AllTasks, diff);
 			break;
 
         case 5: casino();
@@ -114,7 +114,7 @@ void shop()
 {
     cout << "shop\n";
     /* pseudocode/ideas
-        this function will:
+        this function will: 
             1. take arguents such as money that the character has, and the attribute[] array
             2. display a shop of various items
             3. asks user what to buy or exit the shop
@@ -125,9 +125,17 @@ void shop()
             5. Either do not display or mark items that are already bought in some way
     */
 }
-void createTask()
+int createTask(string &newtask, vector<string> AllTasks, int &diff)
 {
-    cout << "createtask\n";
+    cout << "Please enter a new task.";
+    getline(cin, newtask);
+    bool sure = 0;
+    while(!sure)
+    {
+        cout << "\nYou entered: " << newtask << endl;
+        cout << "Please confirm that this is what you wanted to enter. (y/n): ";
+
+    }
     /* pseudocode/ideas
         cin << an input
         print out what the user typed and ask if that is what they want to enter
