@@ -7,112 +7,162 @@
 using namespace std;
 
 void viewStats(int numStats, int attributes[]);
-void viewCompleted();
+void viewTasks(vector<string> &AllTasks, vector<int> &diff, vector<int> &status);
 void shop();
-int createTask(string &newtask, vector<string> AllTasks, int &diff);
+void createTask(string &newtask, vector<string> &AllTasks, vector<int> &diff, vector<int> &status);
 void casino();
 void menu();
-void doTask();
-int getChoice(); // these definitions are subject to change, function types or arguments will probably change
+void doTask(vector<string> &AllTasks, vector<int> &diff, vector<int> &status);
+void adventure();
+int intCheck(string &input); 
+int ynCheck(string &input);// these definitions are subject to change, function types or arguments will probably change
 
 int main() // (view stats, view completed tasks, [casino], shop, make a new task, do a task)
 {
     const int ATT = 5, MAX_STAT = 100; // these can be changed if want
-    int choice, money, diff, attributes[ATT] = {0};
+    int choice, money, attributes[ATT] = {0};
     vector<string> AllTasks;
+    vector<int> diff; // AllTasks[0] will correlate with difficulty of the task diff[0] and completed[0]
+    vector<int> status;
     string newTask = "";
     	do
 	{
 		menu();
-		choice = getChoice();
-
+        string menuNumber;
+        getline(cin, menuNumber);
+        while (intCheck(menuNumber) < 1 || intCheck(menuNumber) > 8)
+            {
+                cout << "This is an invalid input. Please enter a number between 1-8.\n";
+                getline(cin, menuNumber);
+            }
+        choice = intCheck(menuNumber);
 		switch (choice)
 		{
 		case 1: viewStats(ATT, attributes);
 			break;
 
-		case 2: viewCompleted();
+		case 2: viewTasks(AllTasks, diff, status);
 			break;
 
 		case 3: shop();
 			break;
 
-		case 4: createTask(newTask, vector<string> AllTasks, diff);
+		case 4: createTask(newTask, AllTasks, diff, status);
 			break;
 
         case 5: casino();
             break;
 
-        case 6: doTask();
+        case 6: doTask(AllTasks, diff, status);
+            break;
+
+        case 7: adventure();
             break;
 
 		default:
 			break;
 		}
 
-	} while (choice != 7);
+	} while (choice != 8);
     cout << "Thanks for playing!";
     return 0;
 
 }
 void menu()
 {
-    cout << "TASK-TRACK-RPG.\n";
+    cout << "\nTASK-TRACK-RPG.\n";
     cout << "1.  View Your Stats.\n";
 	cout << "2.  View Tasks Completed.\n";
 	cout << "3.  Visit the Shop.\n";
     cout << "4.  Create a New Task.\n";
     cout << "5.  Visit the Casino\n";
     cout << "6.  Attempt a Task\n";
-    cout << "7.  Exit the Program.\n";
-    cout << "Enter your choice(1-7):  ";
+    cout << "7.  Start an Adventure\n";
+    cout << "8.  Exit the game.\n";
+    cout << "Enter your choice(1-8):  ";
 }
-int getChoice()
+int intCheck(string &input)
 {
-    string number;
-    getline(cin, number);
     while (true)
     {
         bool valid = 1;
-        if (size(number) > 1)
+
+        for (int i = 0; i < size(input); i++)
         {
-            valid = 0;
-        }
-        else if (!(number[0] >= '1' && number[0] <= '7'))
-        {
-            valid = 0;
+            if (!(input[i] >= '0' && input[i] <= '9'))
+            {
+                valid = 0;
+            }
         }
         if (valid == 1)
         {
-            return stoi(number);
+            return stoi(input);
         }
         else
         {
-            cout << "Invalid input... This must be an integer value between 1 and 7.\n";
-            getline(cin, number);
+            cout << "Invalid input... Enter this value again.\n";
+            getline(cin, input);
         }
-
+    
+    }
+}
+int ynCheck(string &input)
+{
+    while (true)
+    {
+        if (!(size(input) == 1))
+        {
+            cout << "Invalid input, enter this again. (y/n) \n";
+            getline(cin, input);
+        }
+        else if (!((input[0] >= 'a' && input[0] <= 'z') || (input[0] >= 'A' && input[0] <= 'Z')))
+        {
+            cout << "Invalid input, enter a character again. (y/n) \n";
+            getline(cin, input);
+        }
+        else
+        {
+            return 0;
+        }
     }
 }
 void viewStats(int numStats, int attributes[])
 {
-    cout << "STATS.\n";
+    cout << "\nSTATS.\n";
     for (int i = 0; i < numStats; i++)
     {
         cout << "Attribute " << i << ": " << attributes[i] << endl; // names for attributes will be set accordingly
     }
 
 }
-void viewCompleted()
+void viewTasks(vector<string> &AllTasks, vector<int> &diff, vector<int> &status)
 {
-    cout << "viewcompleted\n";
-    /* pseudocode/ideas
-        create a for loop for every element in the vector AllTasks to print the completed tasks
-    */
+    if (AllTasks.size() == 0)
+    {
+        cout << "\nThere are no tasks available to display. Please create a task before viewing tasks.\n";
+    }
+    else
+    {
+        cout << endl << left << setw(30) << "Task" << setw(15) << "Difficulty" << setw(10) << "Status" << endl;    
+        for (int i = 0; i < AllTasks.size(); i++)
+            {
+                string statusAsText;
+                switch (status[i])
+                {
+                    case 0: statusAsText = "Not Attempted";
+                        break;
+                    case 1: statusAsText = "Completed";
+                        break;
+                    case 2: statusAsText = "Attempted";
+                        break;
+                }
+                cout << left << setw(30) << AllTasks[i] << setw(15) << diff[i] << setw(10) << statusAsText << endl;
+            }
+    }
 }
 void shop()
 {
-    cout << "shop\n";
+    cout << "\nshop\n";
     /* pseudocode/ideas
         this function will: 
             1. take arguents such as money that the character has, and the attribute[] array
@@ -125,42 +175,74 @@ void shop()
             5. Either do not display or mark items that are already bought in some way
     */
 }
-int createTask(string &newtask, vector<string> AllTasks, int &diff)
+void createTask(string &newtask, vector<string> &AllTasks, vector<int> &diff, vector<int> &status)
 {
-    cout << "Please enter a new task.";
-    getline(cin, newtask);
     bool sure = 0;
-    while(!sure)
+    do
     {
+    cout << "\nPlease enter a new task.\n";
+    getline(cin, newtask);
         cout << "\nYou entered: " << newtask << endl;
-        cout << "Please confirm that this is what you wanted to enter. (y/n): ";
-
+        string yn;
+        cout << "\nPlease confirm that this is what you wanted to enter. (y/n): ";
+        getline(cin, yn);
+        ynCheck(yn);
+        if (yn[0] == 'Y' || yn[0] == 'y')
+            sure = 1;
+    } while (!sure);
+    AllTasks.push_back(newtask);
+    string assignDiff;
+    cout << "Please assign a difficulty to this task. (1-100)\n";
+    getline(cin, assignDiff);
+    while (!(intCheck(assignDiff) > 0 || intCheck(assignDiff) < 100 )) 
+    {
+        cout << "Invalid difficulty value. Please assign a value 1-100.";
+        getline(cin, assignDiff);
     }
-    /* pseudocode/ideas
-        cin << an input
-        print out what the user typed and ask if that is what they want to enter
-        then, the user gives the task a numerical difficulty (probably 1-10 or 1-100)
-    */
+    diff.push_back(intCheck(assignDiff));
+    status.push_back(0); // 0 denotes an unfinished task, 1 a finished task, 2 a failed task
 }
 void casino()
 {
-    cout << "casino\n";
+    cout << "\ncasino\n";
     /* pseudocode/ideas
         this function should take money as an argument, then we can implement a 
         game based on randomness (random number guessing, etc.)
     */
 }
-void doTask()
+void doTask(vector<string> &AllTasks, vector<int> &diff, vector<int> &status)
 {
-    cout << "dotask\n";
+    if (AllTasks.size() == 0)
+    {
+        cout << "\nThere are no tasks available to display. Please create a task before viewing tasks.\n";
+    }
+    else
+    {
+        cout << "Available Tasks:\n";
+        for (int i = 0; i < AllTasks.size(); i++)
+        {
+            if (status[i] != 1)
+            {
+                cout << left << setw(30) << "Task" << setw(15) << "Difficulty" << endl;
+            }
+        }
+        cout << "\nEnter the name a of a task to attempt:\n";
+        string taskInput;
+        getline(cin, taskInput);
+
+    }
     /* pseudocode/ideas
         this function is the core of the program, so these are some very rough ideas:
-            1. print out the contents of the string vector AllTasks in a menu (this can be its own function)
+            1. print out the contents of the string vector AllTasks in a menu (this can be its own function) done
             2. get the user to choose a task (if there are no tasks, then the user must make a new task)
             3. we CAN track time elapsed using the clock function https://cplusplus.com/reference/ctime/clock/ 
-            4. Depending on how we determine success/failure/partial success, we can modify attributes or other values
+            4. Depending on how we determine success/failure/ we can modify attributes or other values
                 - failure would lose money and/or debuff some attributes
                 - success would gain money and/or buff attributes
 
     */
+}
+void adventure()
+{
+    cout << "adventure";
 }
