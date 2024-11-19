@@ -1,12 +1,60 @@
-#include <iostream> //Louise
+#include <iostream>
 #include <iomanip>
 #include <string>
-#include <cstring>
 #include <vector>
 #include <random>
 #include <ctime>
 using namespace std;
 
+void viewStats(int numStats, int attributes[]);
+void viewCompleted();
+void shop();
+void createTask();
+void casino();
+void menu();
+void doTask();
+int getChoice(); // these definitions are subject to change, function types or arguments will probably change
+
+int main() // (view stats, view completed tasks, [casino], shop, make a new task, do a task)
+{
+    const int ATT = 5, MAX_STAT = 100; // these can be changed if want
+    int choice, money, attributes[ATT] = {0};
+    vector<string> AllTasks;
+    string newTask = "";
+    	do
+	{
+		menu();
+		choice = getChoice();
+
+		switch (choice)
+		{
+		case 1: viewStats(ATT, attributes);
+			break;
+
+		case 2: viewCompleted();
+			break;
+
+		case 3: shop();
+			break;
+
+		case 4: createTask();
+			break;
+
+    case 5: casino();
+            break;
+
+    case 6: doTask();
+            break;
+
+		default:
+			break;
+		}
+
+	} while (choice != 7);
+    cout << "Thanks for playing!";
+    return 0;
+
+}
 void menu()
 {
     cout << "TASK-TRACK-RPG.\n";
@@ -26,7 +74,7 @@ int getChoice()
     while (true)
     {
         bool valid = 1;
-        if (sizeof(number) > 1)
+        if (size(number) > 1)
         {
             valid = 0;
         }
@@ -53,7 +101,7 @@ void viewStats(int numStats, int attributes[])
     {
         cout << "Attribute " << i << ": " << attributes[i] << endl; // names for attributes will be set accordingly
     }
-
+ 
 }
 void viewCompleted()
 {
