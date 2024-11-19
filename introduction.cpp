@@ -1,6 +1,3 @@
-<<<<<<< Updated upstream
-#include <iostream>
-=======
 #include <iostream> //Louise
 #include <iomanip>
 #include <string>
@@ -8,20 +5,8 @@
 #include <vector>
 #include <random>
 #include <ctime>
->>>>>>> Stashed changes
 using namespace std;
 
-int main() {
-    cout << "Womp womp womp";
-    cout << "ggs cooked";
-
-
-    return 0;
-<<<<<<< Updated upstream
-}
-=======
-
-}
 void menu()
 {
     cout << "TASK-TRACK-RPG.\n";
@@ -123,4 +108,3 @@ void doTask()
 
     */
 }
->>>>>>> Stashed changes
