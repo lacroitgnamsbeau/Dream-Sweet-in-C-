@@ -87,7 +87,7 @@ int intCheck(string &input)
     {
         bool valid = 1;
 
-        for (int i = 0; i < size(input); i++)
+        for (int i = 0; i < input.size(); i++)
         {
             if (!(input[i] >= '0' && input[i] <= '9'))
             {
@@ -110,7 +110,7 @@ int ynCheck(string &input)
 {
     while (true)
     {
-        if (!(size(input) == 1))
+        if (!(input.size() == 1))
         {
             cout << "Invalid input, enter this again. (y/n) \n";
             getline(cin, input);
@@ -254,7 +254,7 @@ void doTask(vector<string> &AllTasks, vector<int> &diff, vector<int> &status)
     /* pseudocode/ideas
         this function is the core of the program, so these are some very rough ideas:
             1. print out the contents of the string vector AllTasks in a menu (this can be its own function) done
-            2. get the user to choose a task (if there are no tasks, then the user must make a new task)
+            2. get the user to choose a task (if there are no tasks, then the user must make a new task) done
             3. we CAN track time elapsed using the clock function https://cplusplus.com/reference/ctime/clock/ 
             4. Depending on how we determine success/failure/ we can modify attributes or other values
                 - failure would lose money and/or debuff some attributes
