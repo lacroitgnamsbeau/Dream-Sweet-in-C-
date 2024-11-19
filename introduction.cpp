@@ -157,7 +157,7 @@ void viewTasks(vector<string> &AllTasks, vector<int> &diff, vector<int> &status)
                         break;
                 }
                 cout << left << setw(30) << AllTasks[i] << setw(15) << diff[i] << setw(10) << statusAsText << endl;
-            }
+            } 
     }
 }
 void shop()
@@ -215,22 +215,42 @@ void doTask(vector<string> &AllTasks, vector<int> &diff, vector<int> &status)
     if (AllTasks.size() == 0)
     {
         cout << "\nThere are no tasks available to display. Please create a task before viewing tasks.\n";
+        return;
     }
-    else
+    cout << "Available Tasks:\n";
+    cout << left << setw(30) << "Task" << setw(15) << "Difficulty" << endl;
+    for (int i = 0; i < AllTasks.size(); i++)
     {
-        cout << "Available Tasks:\n";
+        cout << left << setw(30) << AllTasks[i] << setw(15) << diff[i] << endl;
+    }
+    cout << "\nEnter the name of a task to attempt:\n";
+    string taskInput;
+    bool valid = 0, redo = 0;
+    do
+    {
+        getline(cin, taskInput);
         for (int i = 0; i < AllTasks.size(); i++)
         {
-            if (status[i] != 1)
-            {
-                cout << left << setw(30) << "Task" << setw(15) << "Difficulty" << endl;
-            }
-        }
-        cout << "\nEnter the name a of a task to attempt:\n";
-        string taskInput;
-        getline(cin, taskInput);
+            if(taskInput == AllTasks[i])
+                valid = 1;
+            if(status[i] == 1)
+                redo = 1;
 
-    }
+        }
+        if(redo)
+        {
+            string yn;
+            cout << "This task has already been completed. Would you like to re-do this task? (y/n)";
+            getline(cin, yn);
+            ynCheck(yn);
+            if (yn[0] == 'N' || yn[0] == 'n')
+                valid = 0;
+        }
+        if(!valid)
+            cout << "This is not in the task list. Please check your spelling and enter the task name again.\n";
+    } while(!valid);
+
+
     /* pseudocode/ideas
         this function is the core of the program, so these are some very rough ideas:
             1. print out the contents of the string vector AllTasks in a menu (this can be its own function) done
