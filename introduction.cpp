@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 #include <random>
-#include <ctime>
+#include <time.h>
 using namespace std;
 
 void viewStats(int numStats, int attributes[]);
@@ -71,8 +71,8 @@ int main() // (view stats, view completed tasks, [casino], shop, make a new task
 void menu()
 {
     cout << "\nTASK-TRACK-RPG.\n";
-    cout << "1.  View Your Stats.\n";
-	cout << "2.  View Tasks Completed.\n";
+    cout << "1.  View Your Statas.\n";
+	cout << "2.  View All Tasks.\n";
 	cout << "3.  Visit the Shop.\n";
     cout << "4.  Create a New Task.\n";
     cout << "5.  Visit the Casino\n";
@@ -139,26 +139,25 @@ void viewTasks(vector<string> &AllTasks, vector<int> &diff, vector<int> &status)
 {
     if (AllTasks.size() == 0)
     {
-        cout << "\nThere are no tasks available to display. Please create a task before viewing tasks.\n";
+        cout << "\nThere are no tasks available. Please create a task.\n";
+        return;
     }
-    else
+    cout << endl << left << setw(30) << "Task" << setw(15) << "Difficulty" << setw(10) << "Status" << endl;    
+    for (int i = 0; i < AllTasks.size(); i++)
     {
-        cout << endl << left << setw(30) << "Task" << setw(15) << "Difficulty" << setw(10) << "Status" << endl;    
-        for (int i = 0; i < AllTasks.size(); i++)
-            {
-                string statusAsText;
-                switch (status[i])
-                {
-                    case 0: statusAsText = "Not Attempted";
-                        break;
-                    case 1: statusAsText = "Completed";
-                        break;
-                    case 2: statusAsText = "Attempted";
-                        break;
-                }
-                cout << left << setw(30) << AllTasks[i] << setw(15) << diff[i] << setw(10) << statusAsText << endl;
-            } 
-    }
+        string statusAsText;
+        switch (status[i])
+        {
+            case 0: statusAsText = "Not Attempted";
+                break;
+            case 1: statusAsText = "Completed";
+                break;
+            case 2: statusAsText = "Attempted";
+                break;
+        }
+        cout << left << setw(30) << AllTasks[i] << setw(15) << diff[i] << setw(10) << statusAsText << endl;
+    } 
+
 }
 void shop()
 {
@@ -194,9 +193,9 @@ void createTask(string &newtask, vector<string> &AllTasks, vector<int> &diff, ve
     string assignDiff;
     cout << "Please assign a difficulty to this task. (1-100)\n";
     getline(cin, assignDiff);
-    while (!(intCheck(assignDiff) > 0 || intCheck(assignDiff) < 100 )) 
+    while (!(intCheck(assignDiff) > 0 && intCheck(assignDiff) < 100 )) 
     {
-        cout << "Invalid difficulty value. Please assign a value 1-100.";
+        cout << "Invalid difficulty value. Please assign a value 1-100.\n";
         getline(cin, assignDiff);
     }
     diff.push_back(intCheck(assignDiff));
@@ -212,19 +211,11 @@ void casino()
 }
 void doTask(vector<string> &AllTasks, vector<int> &diff, vector<int> &status)
 {
+    viewTasks(AllTasks, diff, status);
     if (AllTasks.size() == 0)
-    {
-        cout << "\nThere are no tasks available to display. Please create a task before viewing tasks.\n";
         return;
-    }
-    cout << "Available Tasks:\n";
-    cout << left << setw(30) << "Task" << setw(15) << "Difficulty" << endl;
-    for (int i = 0; i < AllTasks.size(); i++)
-    {
-        cout << left << setw(30) << AllTasks[i] << setw(15) << diff[i] << endl;
-    }
     cout << "\nEnter the name of a task to attempt:\n";
-    string taskInput;
+    string taskInput, statusInput;
     bool valid = 0, redo = 0;
     do
     {
@@ -235,7 +226,6 @@ void doTask(vector<string> &AllTasks, vector<int> &diff, vector<int> &status)
                 valid = 1;
             if(status[i] == 1)
                 redo = 1;
-
         }
         if(redo)
         {
@@ -249,8 +239,37 @@ void doTask(vector<string> &AllTasks, vector<int> &diff, vector<int> &status)
         if(!valid)
             cout << "This is not in the task list. Please check your spelling and enter the task name again.\n";
     } while(!valid);
-
-
+    cout << "You selected " << taskInput << "\nPlease attempt the task and indicate if you succeeded or failed. (type fail/success)\n";
+    clock_t time = clock();
+    valid = 1;
+    do
+    {
+        getline(cin, statusInput);
+        if (!(statusInput == "fail" || statusInput == "Fail" || statusInput == "success" || statusInput == "Success"))
+            {
+                valid = 0;
+                cout << "Please check your spelling and enter this input again. (fail/success)\n";
+            }
+    } while (!valid);
+    if (statusInput == "success" || statusInput == "Success")
+    {
+        double seconds = (clock() - time)/double(CLOCKS_PER_SEC);
+        cout << "Nice job! You completed the task " << taskInput << "\nin " << seconds << " seconds!";
+        for (int i = 0; i < AllTasks.size(); i++)
+        {
+            if(taskInput == AllTasks[i])
+            status[i] = 1;
+        }
+    }
+    else
+    {
+        cout << "You have failed this task. You can always try again later";
+        for (int i = 0; i < AllTasks.size(); i++)
+        {
+        if(taskInput == AllTasks[i])
+            status[i] = 2;
+        }
+    }
     /* pseudocode/ideas
         this function is the core of the program, so these are some very rough ideas:
             1. print out the contents of the string vector AllTasks in a menu (this can be its own function) done
