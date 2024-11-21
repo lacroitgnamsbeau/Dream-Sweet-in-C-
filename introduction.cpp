@@ -191,6 +191,17 @@ void createTask(string &newtask, vector<string> &AllTasks, vector<int> &diff, ve
         ynCheck(yn);
         if (yn[0] == 'Y' || yn[0] == 'y')
             sure = 1;
+        if (AllTasks.size() !=0)
+        {
+            for (int i = 0 ; i < AllTasks.size(); i++)
+            {
+                if (newtask == AllTasks[i])
+                    {
+                        sure = 0;
+                        cout << "This task already exists.";
+                    }
+            }
+        }
     } while (!sure);
     AllTasks.push_back(newtask);
     string assignDiff;
@@ -214,37 +225,41 @@ void casino()
 }
 void doTask(vector<string> &AllTasks, vector<int> &diff, vector<int> &status, int &potato)
 {
-    viewTasks(AllTasks, diff, status);
     if (AllTasks.size() == 0)
+    {
+        cout << "There are no tasks to attempt. Please create a new task";
         return;
-    cout << "\nEnter the name of a task to attempt:\n";
+    }
     string taskInput, statusInput;
     bool valid = 0, redo = 0;
     do
     {
+        viewTasks(AllTasks, diff, status);
+        cout << "\nEnter the name of a task to attempt:\n";
         getline(cin, taskInput);
         for (int i = 0; i < AllTasks.size(); i++)
         {
             if(taskInput == AllTasks[i])
+            {
                 valid = 1;
-            if(status[i] == 1)
-                redo = 1;
+                if(status[i] == 1)
+                    redo = 1;
+            }
         }
         if(redo)
         {
             string yn;
-            cout << "This task has already been completed. Would you like to re-do this task? (y/n)";
+            cout << "This task has already been completed. Would you like to re-do this task? (y/n)\n";
             getline(cin, yn);
             ynCheck(yn);
             if (yn[0] == 'N' || yn[0] == 'n')
                 valid = 0;
         }
-        if(!valid)
+        if(!valid && !redo)
             cout << "This is not in the task list. Please check your spelling and enter the task name again.\n";
     } while(!valid);
     cout << "You selected " << taskInput << "\nPlease attempt the task and indicate if you succeeded or failed. (type fail/success)\n";
     clock_t time = clock();
-    valid = 1;
     do
     {
         getline(cin, statusInput);
@@ -253,17 +268,19 @@ void doTask(vector<string> &AllTasks, vector<int> &diff, vector<int> &status, in
                 valid = 0;
                 cout << "Please check your spelling and enter this input again. (fail/success)\n";
             }
+        else 
+            valid = 1;
     } while (!valid);
     if (statusInput == "success" || statusInput == "Success")
     {
         double seconds = (clock() - time)/double(CLOCKS_PER_SEC);
-        cout << "Nice job! You completed the task " << taskInput << "in " << seconds << " seconds!";
+        cout << "Nice job! You completed the task " << taskInput << " in " << seconds << " seconds!";
         for (int i = 0; i < AllTasks.size(); i++)
         {
             if(taskInput == AllTasks[i])
             {
                 status[i] = 1;
-                cout << "\nYou have gained " << diff[i] << " Potatoes for completing this task.";
+                cout << "\nPotatoes gained for completing this task: " << diff[i];
                 potato += diff[i];
             }
         }
@@ -274,20 +291,22 @@ void doTask(vector<string> &AllTasks, vector<int> &diff, vector<int> &status, in
         {
             if(taskInput == AllTasks[i])
             {
-            status[i] = 2;
-            if (potato <= diff[i] / 2)
-            {
-                cout << "You have failed this task and now have 0 Potatoes. You can always try again later";
-                potato = 0;
-            }
-            else
-            {
-            cout << "You have failed this task and lost " << diff[i] / 2 << " Potatoes. You can always try again later";
-            potato -= diff[i] / 2;
-            }
+                if (status[i] != 1)
+                    status[i] = 2;
+                if (potato <= diff[i] / 2)
+                {
+                    cout << "You have failed this task and now have 0 Potatoes. You can always try again later";
+                    potato = 0;
+                } 
+                else
+                {
+                cout << "You have failed this task. Potatoes lost from failure: " << diff[i] / 2;
+                potato -= diff[i] / 2;
+                }
             }
         }
     }
+}
     /* pseudocode/ideas
         this function is the core of the program, so these are some very rough ideas:
             1. print out the contents of the string vector AllTasks in a menu (this can be its own function) done
@@ -298,7 +317,6 @@ void doTask(vector<string> &AllTasks, vector<int> &diff, vector<int> &status, in
                 - success would gain money and/or buff attributes
 
     */
-}
 void adventure()
 {
     cout << "adventure";
