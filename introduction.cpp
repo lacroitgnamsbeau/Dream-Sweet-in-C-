@@ -8,7 +8,7 @@ using namespace std;
 
 void viewStats(int numStats, int attributes[], int potato);
 void viewTasks(vector<string> &AllTasks, vector<int> &diff, vector<int> &status);
-void shop();
+void displayShop();
 void createTask(string &newtask, vector<string> &AllTasks, vector<int> &diff, vector<int> &status);
 void casino();
 void menu();
@@ -46,7 +46,7 @@ int main() // (view stats, view completed tasks, [casino], shop, make a new task
 		case 2: viewTasks(AllTasks, diff, status);
 			break;
 
-		case 3: shop();
+		case 3: displayShop();
 			break;
 
 		case 4: createTask(newTask, AllTasks, diff, status);
@@ -162,20 +162,18 @@ void viewTasks(vector<string> &AllTasks, vector<int> &diff, vector<int> &status)
     } 
 
 }
-void shop()
+void displayShop()
 {
-    cout << "\nshop\n";
-    /* pseudocode/ideas
-        this function will: 
-            1. take arguents such as money that the character has, and the attribute[] array
-            2. display a shop of various items
-            3. asks user what to buy or exit the shop
-            4. if user wants to buy an item
-                -check if they have enough currency (complain it if not)
-                -ask if user is sure if they want to purchase it
-                -upgrade certain attributes when an item is successfully bought
-            5. Either do not display or mark items that are already bought in some way
-    */
+    int userChoice;
+    cout << "\nShop\n"
+         << "1. Weapons " << endl
+         << "2. Armor " << endl
+         << "3. Artifacts " << endl
+         << "4. Potions/Consumables " << endl << endl
+         << "Pick (1-4)" << endl;
+    
+    cin >> userChoice;
+    
 }
 void createTask(string &newtask, vector<string> &AllTasks, vector<int> &diff, vector<int> &status)
 {
