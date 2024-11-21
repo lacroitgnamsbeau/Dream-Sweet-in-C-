@@ -6,26 +6,28 @@
 #include <time.h>
 using namespace std;
 
-void viewStats(int numStats, int attributes[]);
+void viewStats(int numStats, int attributes[], int potato);
 void viewTasks(vector<string> &AllTasks, vector<int> &diff, vector<int> &status);
 void shop();
 void createTask(string &newtask, vector<string> &AllTasks, vector<int> &diff, vector<int> &status);
 void casino();
 void menu();
-void doTask(vector<string> &AllTasks, vector<int> &diff, vector<int> &status);
+void doTask(vector<string> &AllTasks, vector<int> &diff, vector<int> &status, int &potato);
 void adventure();
 int intCheck(string &input); 
 int ynCheck(string &input);// these definitions are subject to change, function types or arguments will probably change
 
+int MAX_STAT = 100;
+
 int main() // (view stats, view completed tasks, [casino], shop, make a new task, do a task)
 {
-    const int ATT = 5, MAX_STAT = 100; // these can be changed if want
-    int choice, money, attributes[ATT] = {0};
+    const int ATT = 5; // these can be changed if want
+    int choice, potato = 0, attributes[ATT] = {0};
     vector<string> AllTasks;
     vector<int> diff; // AllTasks[0] will correlate with difficulty of the task diff[0] and completed[0]
     vector<int> status;
     string newTask = "";
-    	do
+    do
 	{
 		menu();
         string menuNumber;
@@ -38,7 +40,7 @@ int main() // (view stats, view completed tasks, [casino], shop, make a new task
         choice = intCheck(menuNumber);
 		switch (choice)
 		{
-		case 1: viewStats(ATT, attributes);
+		case 1: viewStats(ATT, attributes, potato);
 			break;
 
 		case 2: viewTasks(AllTasks, diff, status);
@@ -53,7 +55,7 @@ int main() // (view stats, view completed tasks, [casino], shop, make a new task
         case 5: casino();
             break;
 
-        case 6: doTask(AllTasks, diff, status);
+        case 6: doTask(AllTasks, diff, status, potato);
             break;
 
         case 7: adventure();
@@ -71,7 +73,7 @@ int main() // (view stats, view completed tasks, [casino], shop, make a new task
 void menu()
 {
     cout << "\nTASK-TRACK-RPG.\n";
-    cout << "1.  View Your Statas.\n";
+    cout << "1.  View Your Stats.\n";
 	cout << "2.  View All Tasks.\n";
 	cout << "3.  Visit the Shop.\n";
     cout << "4.  Create a New Task.\n";
@@ -115,9 +117,9 @@ int ynCheck(string &input)
             cout << "Invalid input, enter this again. (y/n) \n";
             getline(cin, input);
         }
-        else if (!((input[0] >= 'a' && input[0] <= 'z') || (input[0] >= 'A' && input[0] <= 'Z')))
+        else if (!(input[0] == 'y' || input[0] == 'Y' || input[0] == 'n' || input[0] == 'N'))
         {
-            cout << "Invalid input, enter a character again. (y/n) \n";
+            cout << "Invalid input, enter this again. (y/n) \n";
             getline(cin, input);
         }
         else
@@ -126,13 +128,14 @@ int ynCheck(string &input)
         }
     }
 }
-void viewStats(int numStats, int attributes[])
+void viewStats(int numStats, int attributes[], int potato)
 {
     cout << "\nSTATS.\n";
     for (int i = 0; i < numStats; i++)
     {
         cout << "Attribute " << i << ": " << attributes[i] << endl; // names for attributes will be set accordingly
     }
+    cout << "Potatoes: " << potato << endl;
 
 }
 void viewTasks(vector<string> &AllTasks, vector<int> &diff, vector<int> &status)
@@ -193,7 +196,7 @@ void createTask(string &newtask, vector<string> &AllTasks, vector<int> &diff, ve
     string assignDiff;
     cout << "Please assign a difficulty to this task. (1-100)\n";
     getline(cin, assignDiff);
-    while (!(intCheck(assignDiff) > 0 && intCheck(assignDiff) < 100 )) 
+    while (!(intCheck(assignDiff) > 0 && intCheck(assignDiff) <= MAX_STAT)) 
     {
         cout << "Invalid difficulty value. Please assign a value 1-100.\n";
         getline(cin, assignDiff);
@@ -209,7 +212,7 @@ void casino()
         game based on randomness (random number guessing, etc.)
     */
 }
-void doTask(vector<string> &AllTasks, vector<int> &diff, vector<int> &status)
+void doTask(vector<string> &AllTasks, vector<int> &diff, vector<int> &status, int &potato)
 {
     viewTasks(AllTasks, diff, status);
     if (AllTasks.size() == 0)
@@ -254,27 +257,42 @@ void doTask(vector<string> &AllTasks, vector<int> &diff, vector<int> &status)
     if (statusInput == "success" || statusInput == "Success")
     {
         double seconds = (clock() - time)/double(CLOCKS_PER_SEC);
-        cout << "Nice job! You completed the task " << taskInput << "\nin " << seconds << " seconds!";
+        cout << "Nice job! You completed the task " << taskInput << "in " << seconds << " seconds!";
         for (int i = 0; i < AllTasks.size(); i++)
         {
             if(taskInput == AllTasks[i])
-            status[i] = 1;
+            {
+                status[i] = 1;
+                cout << "\nYou have gained " << diff[i] << " Potatoes for completing this task.";
+                potato += diff[i];
+            }
         }
     }
     else
     {
-        cout << "You have failed this task. You can always try again later";
         for (int i = 0; i < AllTasks.size(); i++)
         {
-        if(taskInput == AllTasks[i])
+            if(taskInput == AllTasks[i])
+            {
             status[i] = 2;
+            if (potato <= diff[i] / 2)
+            {
+                cout << "You have failed this task and now have 0 Potatoes. You can always try again later";
+                potato = 0;
+            }
+            else
+            {
+            cout << "You have failed this task and lost " << diff[i] / 2 << " Potatoes. You can always try again later";
+            potato -= diff[i] / 2;
+            }
+            }
         }
     }
     /* pseudocode/ideas
         this function is the core of the program, so these are some very rough ideas:
             1. print out the contents of the string vector AllTasks in a menu (this can be its own function) done
             2. get the user to choose a task (if there are no tasks, then the user must make a new task) done
-            3. we CAN track time elapsed using the clock function https://cplusplus.com/reference/ctime/clock/ 
+            3. we CAN track time elapsed using the clock function https://cplusplus.com/reference/ctime/clock/ done
             4. Depending on how we determine success/failure/ we can modify attributes or other values
                 - failure would lose money and/or debuff some attributes
                 - success would gain money and/or buff attributes
