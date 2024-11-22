@@ -8,7 +8,7 @@ using namespace std;
 
 void viewStats(int numStats, int attributes[], int potato);
 void viewTasks(vector<string> &AllTasks, vector<int> &diff, vector<int> &status);
-void displayShop();
+void displayShop(int &potato);
 void createTask(string &newtask, vector<string> &AllTasks, vector<int> &diff, vector<int> &status);
 void casino();
 void menu();
@@ -46,7 +46,7 @@ int main() // (view stats, view completed tasks, [casino], shop, make a new task
 		case 2: viewTasks(AllTasks, diff, status);
 			break;
 
-		case 3: displayShop();
+		case 3: displayShop(potato);
 			break;
 
 		case 4: createTask(newTask, AllTasks, diff, status);
@@ -162,18 +162,88 @@ void viewTasks(vector<string> &AllTasks, vector<int> &diff, vector<int> &status)
     } 
 
 }
-void displayShop()
+void displayShop(int &potato)
 {
-    int userChoice;
+    struct item
+    {
+        vector<string>name;
+        vector<int>cost;
+    };
+    int *potatoes = &potato;
+
+    item weapon;
+    weapon.name = {"Lapis", "Mecha Penn", "Penn", "Founder's Pen"};
+    weapon.cost = {0, 100, 500, 1000};
+
+    int weaponChoiceInt;
+    string userChoice, weaponChoice;
     cout << "\nShop\n"
+         << "Potatoes: " << *potatoes << endl
          << "1. Weapons " << endl
          << "2. Armor " << endl
          << "3. Artifacts " << endl
-         << "4. Potions/Consumables " << endl << endl
-         << "Pick (1-4)" << endl;
+         << "4. Potions/Consumables " << endl
+         << "5. Back " << endl
+         << "Pick (1-5): ";
     
-    cin >> userChoice;
-    
+    getline(cin, userChoice); cout << endl;
+
+    if (userChoice == "1") {
+        string userWeaponView, buyWeapon;
+        for (int i = 1; i < weapon.name.size() + 1; i++) {
+            cout << i << ") " << weapon.name[i-1] << endl; 
+        }
+        cout << "5) Back\n";
+        cout << "Which weapon would you like to buy? "; getline(cin, userWeaponView); cout << endl;
+        int userWeaponChoiceInt = intCheck(userWeaponView);
+        switch (userWeaponChoiceInt)
+        {
+        case 1:
+            cout << weapon.name[0] << endl
+                 << "Description: Everyone starts with a trusty weapon. Not you though. You get a wooden pencil :p\n"
+                 << "Cost: Free!\n"
+                 << "Buy (y/n)? ";
+            getline(cin, buyWeapon); cout << endl;
+            ynCheck(buyWeapon);
+            if(buyWeapon == "y") {
+                cout << "You now have " << weapon.name[0] << "!" << endl;
+
+            }
+
+            break;
+        
+        case 2:
+            cout << weapon.name[1] << endl
+                 << "Description: It's just a pencil...A pencil made of metal... It also shoots graphite bullets hehe...\n"
+                 << "Cost: 100 Potatoes\n"
+                 << "Buy (y/n)? ";
+            getline(cin, buyWeapon); cout << endl;
+            ynCheck(buyWeapon);
+            if(buyWeapon == "y") {
+                cout << "You now have " << weapon.name[1] << "!" << endl;
+                *potatoes -= weapon.cost[1];
+            }
+            break;
+
+        case 3:
+            cout << weapon.name[2] << endl
+                 << "Description: Not only does this damage a monster, it can also slow them down and make them weaker!\n"
+                 << "Cost: 500 Potatoes\n";
+            break;
+
+        case 4:
+            cout << weapon.name[3] << endl
+                 << "Description: The Founder's Pen was said to contain the oldest knowledge known to man.\n" 
+                 << "Some people believe that it has existed moments after the universe was created.\n"
+                 << "Cost: 1000 Potatoes\n";
+            break;  
+
+        default:
+            break;
+        } 
+
+    }
+
 }
 void createTask(string &newtask, vector<string> &AllTasks, vector<int> &diff, vector<int> &status)
 {
