@@ -14,7 +14,7 @@ void casino();
 void menu();
 void doTask(vector<string> &AllTasks, vector<int> &diff, vector<int> &status, int &potato);
 void adventure();
-int intCheck(string &input); 
+int intCheck(string &input, int min, int max); 
 int ynCheck(string &input);// these definitions are subject to change, function types or arguments will probably change
 
 int MAX_STAT = 100;
@@ -32,12 +32,7 @@ int main() // (view stats, view completed tasks, [casino], shop, make a new task
 		menu();
         string menuNumber;
         getline(cin, menuNumber);
-        while (intCheck(menuNumber) < 1 || intCheck(menuNumber) > 8)
-            {
-                cout << "This is an invalid input. Please enter a number between 1-8.\n";
-                getline(cin, menuNumber);
-            }
-        choice = intCheck(menuNumber);
+        choice = intCheck(menuNumber, 1, 8);
 		switch (choice)
 		{
 		case 1: viewStats(ATT, attributes, potato);
@@ -73,7 +68,7 @@ int main() // (view stats, view completed tasks, [casino], shop, make a new task
 void menu()
 {
     cout << "\nTASK-TRACK-RPG.\n";
-    cout << "1.  View Your Stats.\n";
+    cout << "1.  View Your Statas.\n";
 	cout << "2.  View All Tasks.\n";
 	cout << "3.  Visit the Shop.\n";
     cout << "4.  Create a New Task.\n";
@@ -83,12 +78,12 @@ void menu()
     cout << "8.  Exit the game.\n";
     cout << "Enter your choice(1-8):  ";
 }
-int intCheck(string &input)
+int intCheck(string &input, int min, int max)
 {
-    while (true)
+    bool valid;
+    do
     {
-        bool valid = 1;
-
+        valid = 1;
         for (int i = 0; i < input.size(); i++)
         {
             if (!(input[i] >= '0' && input[i] <= '9'))
@@ -96,17 +91,21 @@ int intCheck(string &input)
                 valid = 0;
             }
         }
+        if (valid == 1 && !(stoi(input) >= min && stoi(input) <= max))
+        {
+            valid = 0;
+        }
         if (valid == 1)
         {
             return stoi(input);
         }
         else
         {
-            cout << "Invalid input... Enter this value again.\n";
+            cout << "Invalid input... Enter this value again. (" << min << "-" << max << ")\n";
             getline(cin, input);
         }
     
-    }
+    } while (!valid);
 }
 int ynCheck(string &input)
 {
@@ -207,12 +206,8 @@ void createTask(string &newtask, vector<string> &AllTasks, vector<int> &diff, ve
     string assignDiff;
     cout << "Please assign a difficulty to this task. (1-100)\n";
     getline(cin, assignDiff);
-    while (!(intCheck(assignDiff) > 0 && intCheck(assignDiff) <= MAX_STAT)) 
-    {
-        cout << "Invalid difficulty value. Please assign a value 1-100.\n";
-        getline(cin, assignDiff);
-    }
-    diff.push_back(intCheck(assignDiff));
+    intCheck(assignDiff, 1, MAX_STAT);
+    diff.push_back(intCheck(assignDiff, 1, MAX_STAT));
     status.push_back(0); // 0 denotes an unfinished task, 1 a finished task, 2 a failed task
 }
 void casino()
@@ -312,7 +307,7 @@ void doTask(vector<string> &AllTasks, vector<int> &diff, vector<int> &status, in
             1. print out the contents of the string vector AllTasks in a menu (this can be its own function) done
             2. get the user to choose a task (if there are no tasks, then the user must make a new task) done
             3. we CAN track time elapsed using the clock function https://cplusplus.com/reference/ctime/clock/ done
-            4. Depending on how we determine success/failure/ we can modify attributes or other values
+            4. Depending on how we determine success/failure/ we can modify attributes or other values done
                 - failure would lose money and/or debuff some attributes
                 - success would gain money and/or buff attributes
 
