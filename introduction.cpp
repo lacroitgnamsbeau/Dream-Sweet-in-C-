@@ -6,7 +6,7 @@
 #include <time.h>
 using namespace std;
 
-void viewStats(int numStats, int attributes[], int potato);
+void viewStats(int numStats, int attributes[], int potato, string attNames[]);
 void viewTasks(vector<string> &AllTasks, vector<int> &diff, vector<int> &status);
 void displayShop(int &potato);
 void createTask(string &newtask, vector<string> &AllTasks, vector<int> &diff, vector<int> &status);
@@ -168,6 +168,7 @@ void displayShop(int &potato)
     struct item
     {
         vector<string>name;
+        vector<string>description;
         vector<int>cost;
     };
 
