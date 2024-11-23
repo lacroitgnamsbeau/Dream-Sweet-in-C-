@@ -173,6 +173,13 @@ void displayShop(int &potato)
 
     item weapon;
     weapon.name = {"Lapis", "Mecha Penn", "Penn", "Founder's Pen"};
+    weapon.description = {
+        "Everyone starts with a trusty weapon. Not you though. You get a wooden pencil :p\n",
+        "It's just a pencil...A pencil made of metal... And it shoots graphite bullets...\n",
+        "Not only does this damage a monster, it can also slow them down and make them weaker!\n",
+        "The Founder's Pen was said to contain the oldest knowledge known to man.\
+        Some people believe that it has existed moments after the universe was created.\n",
+    };
     weapon.cost = {0, 100, 500, 1000};
 
     int weaponChoiceInt;
@@ -195,8 +202,7 @@ void displayShop(int &potato)
         }
         cout << "5) Back\n";
         cout << "Which weapon would you like to buy? "; getline(cin, userWeaponView); cout << endl;
-        int userWeaponChoiceInt = intCheck(userWeaponView, 1, 5);
-        switch (userWeaponChoiceInt)
+        switch (intCheck(userWeaponView, 1, 5))
         {
         case 1:
             cout << weapon.name[0] << endl
