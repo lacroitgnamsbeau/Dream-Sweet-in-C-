@@ -6,7 +6,7 @@
 #include <time.h>
 using namespace std;
 
-void viewStats(int numStats, int attributes[], int potato);
+void viewStats(int numStats, int attributes[], int potato, string attNames[]);
 void viewTasks(vector<string> &AllTasks, vector<int> &diff, vector<int> &status);
 void shop();
 void createTask(string &newtask, vector<string> &AllTasks, vector<int> &diff, vector<int> &status);
@@ -21,9 +21,10 @@ int MAX_STAT = 100;
 
 int main() // (view stats, view completed tasks, [casino], shop, make a new task, do a task)
 {
-    const int ATT = 5; // these can be changed if want
+    const int ATT = 3; // these can be changed if want
     int choice, potato = 0, attributes[ATT] = {0};
-    vector<string> AllTasks;
+    string attNames[ATT] = {"ATK", "DEF", "HP"};
+    vector<string> AllTasks; 
     vector<int> diff; // AllTasks[0] will correlate with difficulty of the task diff[0] and completed[0]
     vector<int> status;
     string newTask = "";
@@ -35,7 +36,7 @@ int main() // (view stats, view completed tasks, [casino], shop, make a new task
         choice = intCheck(menuNumber, 1, 8);
 		switch (choice)
 		{
-		case 1: viewStats(ATT, attributes, potato);
+		case 1: viewStats(ATT, attributes, potato, attNames);
 			break;
 
 		case 2: viewTasks(AllTasks, diff, status);
@@ -68,7 +69,7 @@ int main() // (view stats, view completed tasks, [casino], shop, make a new task
 void menu()
 {
     cout << "\nTASK-TRACK-RPG.\n";
-    cout << "1.  View Your Statas.\n";
+    cout << "1.  View Your Stats.\n";
 	cout << "2.  View All Tasks.\n";
 	cout << "3.  Visit the Shop.\n";
     cout << "4.  Create a New Task.\n";
@@ -127,12 +128,12 @@ int ynCheck(string &input)
         }
     }
 }
-void viewStats(int numStats, int attributes[], int potato)
+void viewStats(int numStats, int attributes[], int potato, string attNames[])
 {
     cout << "\nSTATS.\n";
     for (int i = 0; i < numStats; i++)
     {
-        cout << "Attribute " << i << ": " << attributes[i] << endl; // names for attributes will be set accordingly
+        cout << attNames[i] << ": " << attributes[i] << endl; // names for attributes will be set accordingly
     }
     cout << "Potatoes: " << potato << endl;
 
