@@ -11,6 +11,7 @@ using namespace std;
         vector<string>name;
         vector<string>description;
         vector<int>cost;
+        vector<int>atk = {0}, hp = {0}, def = {0};
     };
 
 void viewStats(int numStats, int attributes[], int potato, string attNames[]);
@@ -20,6 +21,7 @@ void buy(int &potato, int userChoice, item itemType);
 void createTask(string &newtask, vector<string> &AllTasks, vector<int> &diff, vector<int> &status);
 void casino();
 void menu();
+vector<string> inventory(string &item);
 void doTask(vector<string> &AllTasks, vector<int> &diff, vector<int> &status, int &potato);
 void adventure();
 int intCheck(string &input, int min, int max); 
@@ -41,7 +43,7 @@ int main() // (view stats, view completed tasks, [casino], shop, make a new task
 		menu();
         string menuNumber;
         getline(cin, menuNumber);
-        choice = intCheck(menuNumber, 1, 9);
+        choice = intCheck(menuNumber, 1, 8);
 		switch (choice)
 		{
 		case 1: viewStats(ATT, attributes, potato, attNames);
@@ -64,14 +66,12 @@ int main() // (view stats, view completed tasks, [casino], shop, make a new task
 
         case 7: adventure();
             break;
-
-        case 8: displayInventory();
-            break;
+    
 		default:
 			break;
 		}
 
-	} while (choice != 9);
+	} while (choice != 8);
     cout << "Thanks for playing!";
     return 0;
 
@@ -86,9 +86,8 @@ void menu()
     cout << "5.  Visit the Casino\n";
     cout << "6.  Attempt a Task\n";
     cout << "7.  Start an Adventure\n";
-    cout << "8.  View Inventory\n";
-    cout << "9.  Exit the game.\n";
-    cout << "Enter your choice(1-9):  ";
+    cout << "8.  Exit the game.\n";
+    cout << "Enter your choice(1-8):  ";
 }
 int intCheck(string &input, int min, int max)
 {
@@ -205,16 +204,7 @@ vector<string> inventory(string &items) {
         "They said never bring a gun to a knife fight... right?\n",
         "It's just a line. Nothing more to it.\n"
     };
-    
-
-
-void displayInventory() {
-    vector<string> equipment;
-    cout << "Currently Equipped:\n\n";
-    
-
 }
-
 
 
 void displayShop(int &potato)
