@@ -69,7 +69,7 @@ int main() // (view stats, view completed tasks, [casino], shop, make a new task
 void menu()
 {
     cout << "\nTASK-TRACK-RPG.\n";
-    cout << "1.  View Your Statas.\n";
+    cout << "1.  View Your Stats.\n";
 	cout << "2.  View All Tasks.\n";
 	cout << "3.  Visit the Shop.\n";
     cout << "4.  Create a New Task.\n";
