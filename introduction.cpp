@@ -10,7 +10,9 @@ void viewStats(int numStats, int attributes[], int potato, string attNames[]);
 void viewTasks(vector<string> &AllTasks, vector<int> &diff, vector<int> &status);
 void displayShop(int &potato);
 void createTask(string &newtask, vector<string> &AllTasks, vector<int> &diff, vector<int> &status);
-void casino();
+void casino(int &potato);
+void playSlotMachine(int &potato);
+void playDiceRoll(int &potato);
 void menu();
 void doTask(vector<string> &AllTasks, vector<int> &diff, vector<int> &status, int &potato);
 void adventure();
@@ -48,7 +50,7 @@ int main() // (view stats, view completed tasks, [casino], shop, make a new task
 		case 4: createTask(newTask, AllTasks, diff, status);
 			break;
 
-        case 5: casino();
+        case 5: casino(potato);
             break;
 
         case 6: doTask(AllTasks, diff, status, potato);
@@ -326,9 +328,119 @@ void createTask(string &newtask, vector<string> &AllTasks, vector<int> &diff, ve
     diff.push_back(intCheck(assignDiff, 1, MAX_STAT));
     status.push_back(0); // 0 denotes an unfinished task, 1 a finished task, 2 a failed task
 }
-void casino()
+
+//mai started here//
+//Casino has multiple games//
+void casino(int &potato){
+    int choice;
+    do{
+        cout<<"\n---Casino--\n";
+        cout<<"You have "<<potato<<"potatoes.\n";
+        cout<<"Choose a game to play:\n";
+        cout<<"1. Slot Machine\n";
+        cout<<"2. Dice Roll\n";
+        cout<<"3. Exit Casino\n";
+        cout<<"Enter your choice (1-3): ";
+        string input;
+        getline(cin, input);
+        choice=intCheck(input, 1, 3); //validate input
+
+        switch(choice){
+            case 1:
+                playSlotMachine(potato); //to play slot machine
+                break;
+            case 2:
+                playDiceRoll(potato); //to play dice roll game
+                break;
+            case 3:
+                cout<<"Leaving the casino. Come gamble again!\n";
+                break;
+            default:
+                cout<<"Invalid choice. Please try again.\n";
+        }
+    } while(choice !=3);
+}
+
+//slot machine is implemented//
+void playSlotMachine(int &potato)
 {
-    cout << "\ncasino\n";
+    cout << "\n---casino---\n";
+    int bet;
+    cout << "You have"<<potato<<"potatoes.\n";
+    cout << "Enter your bet: ";
+    cin >> bet;
+
+    if (bet <= 0 || bet > potato){ //validate bet here//
+        cout<<"Invalid bet attempt. Returning to menu.\n";
+        return;
+    }
+
+    potato -= bet; //subtract bet from total potatoes//
+
+    //generating random slots//
+    int slot1=rand()%10+1;
+    int slot2=rand()%10+1;
+    int slot3=rand()%10+1;
+
+    displaySlots(slot1, slot2, slot3); //this will display the slots//
+
+    if(slot1 == slot2 && slot2 == slot3){
+        int winnings=slot1*10; //jacket pot reward//
+        cout<<"JACKPOT! You win"<<winnings<<"potatoes!\n";
+        potato += winnings;
+    } else if (slot1 == slot2 || slot2 == slot3 || slot1 == slot3){
+        int winnings=(slot1+slot2+slot3)*2; //partial slot reward for match//
+        cout<<"GOOD but not bad! You win"<<winnings<<"potatoes!\n";
+        potato += winnings;
+    } else {
+        cout<<"GET OUTTA HERE!!! You're broke! GAME OVER!!\n";
+    }
+    cin.ignore();
+}
+
+//Dice roll game implemented here//
+void playDiceRolls(int &potato){
+    int bet, playerGuess;
+    cout<<"\n---Dice Roll---\n";
+    cout<<"you have"<<potato<<"potatoes.\n";
+    cout<<"Enter your bet: ";
+    cin>>bet;
+
+    if (bet<=0 || bet>potato){ //validate bet//
+        cout<<"Invalid bet amount. Returning to the casino.\n";
+        return;
+    }
+
+    cout<<"Guess the dice roll (1-6): ";
+    cin>>playerGuess;
+
+    if (playerGuess<1 || playerGuess >6){ //validate guess//
+        cout<<"Invalid guess. Returning to the casino.\n";
+        return;
+    }
+
+    potato -= bet; //deduct bet from total potatoes//
+
+    int diceRoll=rand()%6+1; //generate dice roll//
+    cout<<"The dice rolls a "<<diceRoll<<".\n";
+
+    if (playerGuess==diceRoll){
+        int winnings=bet*6; //correct guess reward//
+        cout<<"You guess correctly! You win "<<winnings<<"potatoes!\n";
+        potato += winnings;
+    } else{
+        cout<<"Sorry, better luck next time!\n";
+    }
+    cin.ignore();
+}
+
+//displays slot machine rsults//
+void displaySlots(int slot1, int slot2, int slot3){
+    cout<<"-------------------\n";
+    cout<<"|   "<<slot1<<"   |   "<<slot2<<"   |   "<<slot3<<"   |\n";
+    cout<<"-------------------\n";
+} 
+//Mai stopped here//
     /* pseudocode/ideas
         this function should take money as an argument, then we can implement a 
         game based on randomness (random number guessing, etc.)
