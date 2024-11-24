@@ -6,7 +6,7 @@
 #include <time.h>
 using namespace std;
 
-void viewStats(int numStats, int attributes[], int potato);
+void viewStats(int numStats, int attributes[], int potato, string attNames[]);
 void viewTasks(vector<string> &AllTasks, vector<int> &diff, vector<int> &status);
 void displayShop(int &potato);
 void createTask(string &newtask, vector<string> &AllTasks, vector<int> &diff, vector<int> &status);
@@ -84,15 +84,20 @@ int intCheck(string &input, int min, int max)
     bool valid;
     do
     {
-        valid = 1;
+        valid = 0;
         for (int i = 0; i < input.size(); i++)
         {
-            if (!(input[i] >= '0' && input[i] <= '9'))
+            if (input[i] >= '0' && input[i] <= '9')
+            {
+                valid = 1;
+            }
+            else
             {
                 valid = 0;
+                break;
             }
         }
-        if (valid == 1 && !(stoi(input) >= min && stoi(input) <= max))
+        if (valid && !(stoi(input) >= min && stoi(input) <= max))
         {
             valid = 0;
         }
