@@ -200,94 +200,40 @@ void displayShop(int &potato)
          << "Pick (1-5): ";
     
     getline(cin, userChoice); cout << endl;
-
-    if (userChoice == "1") {
-        string userWeaponView, buyWeapon;
-        for (int i = 1; i < weapon.name.size() + 1; i++) {
-            cout << i << ") " << weapon.name[i-1] << endl; 
+    intCheck(userChoice, 1, 5);
+    switch (intCheck(userChoice, 1, 5)) {
+        case 1: {
+            string userWeaponView, buyWeapon;
+            for (int i = 1; i < weapon.name.size() + 1; i++) {
+                cout << i << ") " << weapon.name[i-1] << endl; 
+            }
+            cout << "5) Back\n";
+            cout << "Which weapon would you like to buy? "; getline(cin, userWeaponView); cout << endl;
+            for (int i = 0; i < 5; i++)
+            {
+                if(intCheck(userWeaponView, 1, 5) == i + 1)
+                {
+                cout << weapon.name[i] << endl
+                    << weapon.description[i] << endl
+                    << "Cost: "<< weapon.cost[i] << " Potatoes." << endl
+                    << "Buy (y/n)?" << endl;
+                getline(cin, buyWeapon);
+                ynCheck(buyWeapon);
+                if(buyWeapon == "y") {
+                    if(potato < weapon.cost[i]) {
+                        cout << "You don't have enough money... womp womp\n";
+                        break;
+                    }
+                    cout << "You now have " << weapon.name[i] << "!" << endl;
+                    potato -= weapon.cost[i];
+                    cout << "You now have: " << potato << " Potatoes";
+                    }
+                }
+            }
+        break;
         }
-        cout << "5) Back\n";
-        cout << "Which weapon would you like to buy? "; getline(cin, userWeaponView); cout << endl;
-        switch (intCheck(userWeaponView, 1, 5))
-        {
-        case 1:
-            cout << weapon.name[0] << endl
-                 << "Description: Everyone starts with a trusty weapon. Not you though. You get a wooden pencil :p\n"
-                 << "Cost: Free!\n"
-                 << "Buy (y/n)? ";
-            getline(cin, buyWeapon); cout << endl;
-            ynCheck(buyWeapon);
-            if(buyWeapon == "y") {
-                if(potato < weapon.cost[0]) {
-                    cout << "You don't have enough money... womp womp\n";
-                    break;
-                }
-                cout << "You now have " << weapon.name[0] << "!" << endl;
-                potato -= weapon.cost[0];
-                cout << "You now have: " << potato << " Potatoes";
-            }
-
-            break;
-        
-        case 2:
-            cout << weapon.name[1] << endl
-                 << "Description: It's just a pencil...A pencil made of metal... It also shoots graphite bullets hehe...\n"
-                 << "Cost: 100 Potatoes\n"
-                 << "Buy (y/n)? ";
-            getline(cin, buyWeapon); cout << endl;
-            ynCheck(buyWeapon);
-            if(buyWeapon == "y") {
-                if (potato < weapon.cost[1]) {
-                    cout << "You don't have enough money... womp womp\n";
-                    break;
-                }
-                cout << "You now have " << weapon.name[1] << "!" << endl;
-                potato -= weapon.cost[1];
-                cout << "You now have: " << potato << " Potatoes";
-            }
-            break;
-
-        case 3:
-            cout << weapon.name[2] << endl
-                 << "Description: Not only does this damage a monster, it can also slow them down and make them weaker!\n"
-                 << "Cost: 500 Potatoes\n"
-                 << "Buy (y/n)? ";
-            getline(cin, buyWeapon); cout << endl;
-            ynCheck(buyWeapon);
-            if(buyWeapon == "y") {
-                if (potato < weapon.cost[2]) {
-                    cout << "You don't have enough money... womp womp\n";
-                    break;
-                }
-                cout << "You now have " << weapon.name[2] << "!" << endl;
-                potato -= weapon.cost[2];
-                cout << "You now have: " << potato << " Potatoes";
-            }
-            break;
-
-        case 4:
-            cout << weapon.name[3] << endl
-                 << "Description: The Founder's Pen was said to contain the oldest knowledge known to man.\n" 
-                 << "Some people believe that it has existed moments after the universe was created.\n"
-                 << "Cost: 1000 Potatoes\n"
-                 << "Buy (y/n)? ";
-            getline(cin, buyWeapon); cout << endl;
-            ynCheck(buyWeapon);
-            if(buyWeapon == "y") {
-                if (potato < weapon.cost[3]) {
-                    cout << "You don't have enough money... womp womp\n";
-                    break;
-                }
-                cout << "You now have " << weapon.name[3] << "!" << endl;
-                potato -= weapon.cost[3];
-                cout << "You now have: " << potato << " Potatoes\n";
-            }
-            break;  
-
         default:
-            break;
-        } 
-
+        break;
     }
 
 }
