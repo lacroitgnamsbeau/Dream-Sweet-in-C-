@@ -9,6 +9,7 @@ using namespace std;
 void viewStats(int numStats, int attributes[], int potato, string attNames[]);
 void viewTasks(vector<string> &AllTasks, vector<int> &diff, vector<int> &status);
 void displayShop(int &potato);
+void inventory(vector<string>&items);
 void createTask(string &newtask, vector<string> &AllTasks, vector<int> &diff, vector<int> &status);
 void casino();
 void menu();
@@ -18,6 +19,15 @@ int intCheck(string &input, int min, int max);
 int ynCheck(string &input);// these definitions are subject to change, function types or arguments will probably change
 
 int MAX_STAT = 100;
+
+struct item
+    {
+        vector<string>name;
+        vector<string>description;
+        vector<int>cost;
+        vector<string>attNames;
+        vector<int>attributes;
+    };
 
 int main() // (view stats, view completed tasks, [casino], shop, make a new task, do a task)
 {
@@ -168,14 +178,26 @@ void viewTasks(vector<string> &AllTasks, vector<int> &diff, vector<int> &status)
 
 }
 
+void inventory(vector<string>&items) {
+    item weapon, armor, artifact;
+    
+    weapon.name = {"Lapis", "Mecha Penn", "Penn", "Founder's Pen"};
+    weapon.description = {
+        "Everyone starts with a trusty weapon. Not you though. You get a wooden pencil :p\n",
+        "It's just a pencil...A pencil made of metal... And it shoots graphite bullets...\n",
+        "Not only does this damage a monster, it can also slow them down and make them weaker!\n",
+        "The Founder's Pen was said to contain the oldest knowledge known to man.\
+        Some people believe that it has existed moments after the universe was created.\n",
+    };
+    weapon.attNames = {""};
+
+
+}
+
+
+
 void displayShop(int &potato)
 {
-    struct item
-    {
-        vector<string>name;
-        vector<string>description;
-        vector<int>cost;
-    };
 
     item weapon;
     weapon.name = {"Lapis", "Mecha Penn", "Penn", "Founder's Pen"};
