@@ -23,6 +23,7 @@ void casino(int &potato);
 void playSlotMachine(int &potato);
 void playDiceRoll(int &potato);
 void menu();
+void displaySlots(int slot1, int slot2, int slot3);
 /*vector<string> */void inventory(string& item); // just putting as void to avoid errors
 void doTask(vector<string>& AllTasks, vector<int>& diff, vector<int>& status, int& potato);
 void adventure();
@@ -45,7 +46,7 @@ int main() // (view stats, view completed tasks, [casino], shop, make a new task
         menu();
         string menuNumber;
         getline(cin, menuNumber);
-        choice = intCheck(menuNumber, 1, 8);
+        choice = intCheck(menuNumber, 1, 9);
         switch (choice)
         {
         case 1: viewStats(numStats, attributes, potato, attNames);
@@ -89,7 +90,7 @@ void menu()
     cout << "6.  Attempt a Task\n";
     cout << "7.  Start an Adventure\n";
     cout << "8.  Exit the game.\n";
-    cout << "Enter your choice(1-8):  ";
+    cout << "Enter your choice(1-8): ";
 }
 int intCheck(string& input, int min, int max)
 {
@@ -109,7 +110,7 @@ int intCheck(string& input, int min, int max)
                 break;
             }
         }
-        if (valid && !(stoi(input) >= min && stoi(input) <= max))
+        if (valid && !(stoi(input) >= min && stoi(input) < max))
         {
             valid = 0;
         }
@@ -258,7 +259,7 @@ void displayShop(int& potato, int attributes[], int numStats)
         << "Pick (1-5): ";
 
     getline(cin, userChoice); cout << endl;
-    int shopChoice = intCheck(userChoice, 1, 5);
+    int shopChoice = intCheck(userChoice, 1, 6);
     switch (shopChoice)
     {
     case 1: buy(potato, shopChoice, weapon, attributes, numStats);
@@ -282,9 +283,10 @@ void buy(int& potato, int userChoice, item itemType, int attributes[], int numSt
     cout << "5) Back\n";
     string userItemView, buyItem;
     cout << "Which weapon would you like to buy? "; getline(cin, userItemView); cout << endl;
+    int userItemChoice = intCheck(userItemView, 1, 6);
     for (int i = 0; i < 5; i++)
     {
-        if (intCheck(userItemView, 1, 5) == i + 1)
+        if ((userItemChoice) == i + 1)
         {
             cout << itemType.atk[i] << endl;
             cout << itemType.name[i] << endl
@@ -306,8 +308,11 @@ void buy(int& potato, int userChoice, item itemType, int attributes[], int numSt
                 if (itemType.def[i] != 0) attributes[2] += itemType.def[i];// attribute 
             }
         }
-        else if (intCheck(userItemView, 1, 5) == 5)
+        else if (userItemChoice == 5) 
+        {
             displayShop(potato, attributes, numStats);
+            break;
+        }
     }
 }
 void createTask(string& newtask, vector<string>& AllTasks, vector<int>& diff, vector<int>& status)
@@ -340,8 +345,8 @@ void createTask(string& newtask, vector<string>& AllTasks, vector<int>& diff, ve
     string assignDiff;
     cout << "Please assign a difficulty to this task. (1-100)\n";
     getline(cin, assignDiff);
-    intCheck(assignDiff, 1, MAX_STAT);
-    diff.push_back(intCheck(assignDiff, 1, MAX_STAT));
+    intCheck(assignDiff, 1, MAX_STAT + 1);
+    diff.push_back(intCheck(assignDiff, 1, MAX_STAT + 1));
     status.push_back(0); // 0 denotes an unfinished task, 1 a finished task, 2 a failed task
     cout << "The task has been created.";
 }
@@ -352,7 +357,7 @@ void casino(int &potato){
     int choice;
     do{
         cout<<"\n---Casino--\n";
-        cout<<"You have "<<potato<<"potatoes.\n";
+        cout<<"You have "<<potato<<" Potatoes.\n";
         cout<<"Choose a game to play:\n";
         cout<<"1. Slot Machine\n";
         cout<<"2. Dice Roll\n";
@@ -360,7 +365,7 @@ void casino(int &potato){
         cout<<"Enter your choice (1-3): ";
         string input;
         getline(cin, input);
-        choice=intCheck(input, 1, 3); //validate input
+        choice=intCheck(input, 1, 4); //validate input
 
         switch(choice){
             case 1:
@@ -383,7 +388,7 @@ void playSlotMachine(int &potato)
 {
     cout << "\n---casino---\n";
     int bet;
-    cout << "You have"<<potato<<"potatoes.\n";
+    cout << "You have "<< potato <<" Potatoes.\n";
     cout << "Enter your bet: ";
     cin >> bet;
 
@@ -403,11 +408,11 @@ void playSlotMachine(int &potato)
 
     if(slot1 == slot2 && slot2 == slot3){
         int winnings=slot1*10; //jacket pot reward//
-        cout<<"JACKPOT! You win"<<winnings<<"potatoes!\n";
+        cout<<"JACKPOT! You win "<< winnings <<" Potatoes!\n";
         potato += winnings;
     } else if (slot1 == slot2 || slot2 == slot3 || slot1 == slot3){
         int winnings=(slot1+slot2+slot3)*2; //partial slot reward for match//
-        cout<<"GOOD but not bad! You win"<<winnings<<"potatoes!\n";
+        cout<<"GOOD but not bad! You win "<< winnings <<" Potatoes!\n";
         potato += winnings;
     } else {
         cout<<"GET OUTTA HERE!!! You're broke! GAME OVER!!\n";
@@ -416,10 +421,10 @@ void playSlotMachine(int &potato)
 }
 
 //Dice roll game implemented here//
-void playDiceRolls(int &potato){
+void playDiceRoll(int &potato){
     int bet, playerGuess;
     cout<<"\n---Dice Roll---\n";
-    cout<<"you have"<<potato<<"potatoes.\n";
+    cout<<"You have "<< potato <<" Potatoes.\n";
     cout<<"Enter your bet: ";
     cin>>bet;
 
@@ -443,7 +448,7 @@ void playDiceRolls(int &potato){
 
     if (playerGuess==diceRoll){
         int winnings=bet*6; //correct guess reward//
-        cout<<"You guess correctly! You win "<<winnings<<"potatoes!\n";
+        cout<<"You guess correctly! You win "<<winnings<<" Potatoes!\n";
         potato += winnings;
     } else{
         cout<<"Sorry, better luck next time!\n";
@@ -457,12 +462,7 @@ void displaySlots(int slot1, int slot2, int slot3){
     cout<<"|   "<<slot1<<"   |   "<<slot2<<"   |   "<<slot3<<"   |\n";
     cout<<"-------------------\n";
 } 
-//Mai stopped here//
-    /* pseudocode/ideas
-        this function should take money as an argument, then we can implement a
-        game based on randomness (random number guessing, etc.)
-    */
-}
+
 void doTask(vector<string>& AllTasks, vector<int>& diff, vector<int>& status, int& potato)
 {
     if (AllTasks.size() == 0)
