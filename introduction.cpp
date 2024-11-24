@@ -69,7 +69,7 @@ int main() // (view stats, view completed tasks, [casino], shop, make a new task
 void menu()
 {
     cout << "\nTASK-TRACK-RPG.\n";
-    cout << "1.  View Your Statas.\n";
+    cout << "1.  View Your Stats.\n";
 	cout << "2.  View All Tasks.\n";
 	cout << "3.  Visit the Shop.\n";
     cout << "4.  Create a New Task.\n";
@@ -84,15 +84,20 @@ int intCheck(string &input, int min, int max)
     bool valid;
     do
     {
-        valid = 1;
+        valid = 0;
         for (int i = 0; i < input.size(); i++)
         {
-            if (!(input[i] >= '0' && input[i] <= '9'))
+            if (input[i] >= '0' && input[i] <= '9')
+            {
+                valid = 1;
+            }
+            else
             {
                 valid = 0;
+                break;
             }
         }
-        if (valid == 1 && !(stoi(input) >= min && stoi(input) <= max))
+        if (valid && !(stoi(input) >= min && stoi(input) <= max))
         {
             valid = 0;
         }
