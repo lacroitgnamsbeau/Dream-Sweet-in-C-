@@ -190,8 +190,7 @@ void inventory(vector<string>&items) {
         Some people believe that it has existed moments after the universe was created.\n",
     };
     weapon.attNames = {""};
-
-
+    
 }
 
 
