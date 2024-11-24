@@ -9,7 +9,6 @@ using namespace std;
 void viewStats(int numStats, int attributes[], int potato, string attNames[]);
 void viewTasks(vector<string> &AllTasks, vector<int> &diff, vector<int> &status);
 void displayShop(int &potato);
-void inventory(vector<string>&items);
 void createTask(string &newtask, vector<string> &AllTasks, vector<int> &diff, vector<int> &status);
 void casino();
 void menu();
@@ -18,15 +17,13 @@ void adventure();
 int intCheck(string &input, int min, int max); 
 int ynCheck(string &input);// these definitions are subject to change, function types or arguments will probably change
 
-int MAX_STAT = 100;
+int MAX_STAT = 1000;
 
 struct item
     {
-        vector<string>name;
-        vector<string>description;
-        vector<int>cost;
-        vector<string>attNames;
-        vector<int>attributes;
+        vector<string>description, name;
+        vector<int>atk, def, hp, attributes, cost;
+        bool bought;
     };
 
 int main() // (view stats, view completed tasks, [casino], shop, make a new task, do a task)
@@ -34,7 +31,7 @@ int main() // (view stats, view completed tasks, [casino], shop, make a new task
     const int ATT = 3; // these can be changed if want
     int choice, potato = 0, attributes[ATT] = {0};
     string attNames[ATT] = {"ATK", "DEF", "HP"};
-    vector<string> AllTasks; 
+    vector<string> AllTasks, items; 
     vector<int> diff; // AllTasks[0] will correlate with difficulty of the task diff[0] and completed[0]
     vector<int> status;
     string newTask = "";
@@ -43,7 +40,7 @@ int main() // (view stats, view completed tasks, [casino], shop, make a new task
 		menu();
         string menuNumber;
         getline(cin, menuNumber);
-        choice = intCheck(menuNumber, 1, 8);
+        choice = intCheck(menuNumber, 1, 9);
 		switch (choice)
 		{
 		case 1: viewStats(ATT, attributes, potato, attNames);
@@ -67,11 +64,13 @@ int main() // (view stats, view completed tasks, [casino], shop, make a new task
         case 7: adventure();
             break;
 
+        case 8: displayInventory();
+            break;
 		default:
 			break;
 		}
 
-	} while (choice != 8);
+	} while (choice != 9);
     cout << "Thanks for playing!";
     return 0;
 
@@ -86,8 +85,9 @@ void menu()
     cout << "5.  Visit the Casino\n";
     cout << "6.  Attempt a Task\n";
     cout << "7.  Start an Adventure\n";
-    cout << "8.  Exit the game.\n";
-    cout << "Enter your choice(1-8):  ";
+    cout << "8.  View Inventory\n";
+    cout << "9.  Exit the game.\n";
+    cout << "Enter your choice(1-9):  ";
 }
 int intCheck(string &input, int min, int max)
 {
@@ -178,9 +178,9 @@ void viewTasks(vector<string> &AllTasks, vector<int> &diff, vector<int> &status)
 
 }
 
-void inventory(vector<string>&items) {
+vector<string> inventory(string &items) {
     item weapon, armor, artifact;
-    
+    vector<string>equipped;
     weapon.name = {"Lapis", "Mecha Penn", "Penn", "Founder's Pen"};
     weapon.description = {
         "Everyone starts with a trusty weapon. Not you though. You get a wooden pencil :p\n",
@@ -189,16 +189,37 @@ void inventory(vector<string>&items) {
         "The Founder's Pen was said to contain the oldest knowledge known to man.\
         Some people believe that it has existed moments after the universe was created.\n",
     };
-    weapon.attNames = {""};
+    weapon.atk = {0, 30, 100, 1000};
+
+    for (int i = 0; i < weapon.name.size(); i++) {
+        if (weapon.name[i] == items) {
+            equipped.push_back(weapon.name[i]);
+        }
+    }
+
+    artifact.name = {"Sharpener", "Reizer", "Knoife", "Just a line\n"};
+    artifact.description = {
+        "When things get dull, you gotta make a point.\n",
+        "There's not enough EDGE.\n",
+        "They said never bring a gun to a knife fight... right?\n",
+        "It's just a line. Nothing more to it.\n"
+    };
+
+}
+
+void displayInventory() {
+    vector<string> equipment;
+    cout << "Currently Equipped:\n\n";
     
+
 }
 
 
 
 void displayShop(int &potato)
 {
-
     item weapon;
+
     weapon.name = {"Lapis", "Mecha Penn", "Penn", "Founder's Pen"};
     weapon.description = {
         "Everyone starts with a trusty weapon. Not you though. You get a wooden pencil :p\n",
