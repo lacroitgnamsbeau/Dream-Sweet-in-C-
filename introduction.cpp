@@ -571,7 +571,6 @@ void doTask(vector<string>& AllTasks, vector<int>& diff, vector<int>& status, in
 void adventure(int attributes[])
 {
     system("cls");
-
     entity enemy;
     enemy.name = {"Slime", "Ajemo"}; enemy.atk = {10, 100}; enemy.hp = {100, 500};
 
