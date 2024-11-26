@@ -559,30 +559,23 @@ void doTask(vector<string>& AllTasks, vector<int>& diff, vector<int>& status, in
     }
     sleep_for(seconds(2));
 }
-/* pseudocode/ideas
-    this function is the core of the program, so these are some very rough ideas:
-        1. print out the contents of the string vector AllTasks in a menu (this can be its own function) done
-        2. get the user to choose a task (if there are no tasks, then the user must make a new task) done
-        3. we CAN track time elapsed using the clock function https://cplusplus.com/reference/ctime/clock/ done
-        4. Depending on how we determine success/failure/ we can modify attributes or other values done
-            - failure would lose money and/or debuff some attributes
-            - success would gain money and/or buff attributes
 
-*/
-void adventure(int attributes[])
+void adventure(int attributes[]) //Only need elements 0 and 2 for enemy
 {
     system("cls");
-
     entity enemy;
+    int playerAtk, playerDef, playerHp;
     enemy.name = {"Slime", "Ajemo"}; enemy.atk = {10, 100}; enemy.hp = {100, 500};
+    
+    playerAtk = attributes[0]; playerDef = attributes[1]; playerHp = attributes[2];
 
-    cout << "\n\nGoing for an adventure eh?\n\n"; 
+    cout << "Atk: " << playerAtk << endl << "Def: " << playerDef << endl << "Hp: " << playerHp << endl;
 
-    sleep_for(seconds(1));
-    cout << "Good luck!\n";
-    sleep_for(seconds(1));
+    cout << "\n\nGoing for an adventure eh?\n\n"; sleep_for(seconds(2));
+    system("cls");
+
+    cout << "Good luck!\n"; sleep_for(seconds(2)); system("cls");
     cout << "Don't die"; sleep_for(seconds(1)); cout << '.'; sleep_for(seconds(1)); cout << '.'; sleep_for(seconds(1)); cout << '.';
     cout << endl;
-    system("pause");
     system("cls");
 }
