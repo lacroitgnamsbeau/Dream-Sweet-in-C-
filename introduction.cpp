@@ -63,6 +63,7 @@ int main() // (view stats, view completed tasks, [casino], shop, make a new task
             break;
 
         case 2: viewTasks(AllTasks, diff, status);
+            system("pause");
             break;
 
         case 3: displayShop(potato, attributes, numStats);
@@ -163,7 +164,8 @@ void viewStats(int numStats, int attributes[], int potato, string attNames[])
     {
         cout << attNames[i] << ": " << attributes[i] << endl; // names for attributes will be set accordingly
     }
-    cout << "Potatoes: " << potato << endl;
+    cout << "Potatoes: " << potato << endl << endl;
+    system("pause");
 
 }
 void viewTasks(vector<string>& AllTasks, vector<int>& diff, vector<int>& status)
@@ -188,7 +190,6 @@ void viewTasks(vector<string>& AllTasks, vector<int>& diff, vector<int>& status)
         }
         cout << left << setw(30) << AllTasks[i] << setw(15) << diff[i] << setw(10) << statusAsText << endl;
     }
-
 }
 
 /*vector<string> */void inventory(string& items) {
@@ -308,6 +309,7 @@ void buy(int& potato, int userChoice, item itemType, int attributes[], int numSt
             if (buyItem == "y") {
                 if (potato < itemType.cost[i]) {
                     cout << "You don't have enough money... womp womp\n";
+                    system("pause");
                     break;
                 }
                 cout << "You now have " << itemType.name[i] << "!" << endl;
@@ -315,7 +317,8 @@ void buy(int& potato, int userChoice, item itemType, int attributes[], int numSt
                 cout << "You now have: " << potato << " Potatoes";
                 if (itemType.atk[i] != 0) attributes[0] += itemType.atk[i];
                 if (itemType.hp[i] != 0) attributes[1] += itemType.hp[i];
-                if (itemType.def[i] != 0) attributes[2] += itemType.def[i];// attribute 
+                if (itemType.def[i] != 0) attributes[2] += itemType.def[i];// attribute 0 = atk, 1 = hp, 2 = def
+                system("pause");
             }
         }
         else if (userItemChoice == 5) 
@@ -348,6 +351,7 @@ void createTask(string& newtask, vector<string>& AllTasks, vector<int>& diff, ve
                 {
                     sure = 0;
                     cout << "This task already exists.";
+                    sleep_for(seconds(1));
                 }
             }
         }
@@ -360,6 +364,7 @@ void createTask(string& newtask, vector<string>& AllTasks, vector<int>& diff, ve
     diff.push_back(intCheck(assignDiff, 1, MAX_STAT + 1));
     status.push_back(0); // 0 denotes an unfinished task, 1 a finished task, 2 a failed task
     cout << "The task has been created.";
+    sleep_for(seconds(1));
 }
 
 //mai started here//
@@ -398,17 +403,15 @@ void casino(int &potato){
 void playSlotMachine(int &potato)
 {
     cout << "\n---casino---\n";
-    int bet;
+    string bet;
+    int validBet;
     cout << "You have "<< potato <<" Potatoes.\n";
     cout << "Enter your bet: ";
-    cin >> bet;
+    getline(cin, bet);
 
-    if (bet <= 0 || bet > potato){ //validate bet here//
-        cout<<"Invalid bet attempt. Returning to menu.\n";
-        return;
-    }
+    validBet = intCheck(bet, 1, potato + 1);
 
-    potato -= bet; //subtract bet from total potatoes//
+    potato -= validBet; //subtract bet from total potatoes//
 
     //generating random slots//
     int slot1=rand()%10+1;
@@ -428,43 +431,38 @@ void playSlotMachine(int &potato)
     } else {
         cout<<"GET OUTTA HERE!!! You're broke! GAME OVER!!\n";
     }
-    cin.ignore();
+    sleep_for(seconds(2));
 }
 
 //Dice roll game implemented here//
 void playDiceRoll(int &potato){
-    int bet, playerGuess;
+    string bet, playerGuess;
+    int validBet, validGuess;
     cout<<"\n---Dice Roll---\n";
     cout<<"You have "<< potato <<" Potatoes.\n";
     cout<<"Enter your bet: ";
-    cin>>bet;
+    getline(cin, bet);
 
-    if (bet<=0 || bet>potato){ //validate bet//
-        cout<<"Invalid bet amount. Returning to the casino.\n";
-        return;
-    }
+    validBet = intCheck(bet, 1, potato + 1);
 
     cout<<"Guess the dice roll (1-6): ";
-    cin>>playerGuess;
+    getline(cin, playerGuess);
 
-    if (playerGuess<1 || playerGuess >6){ //validate guess//
-        cout<<"Invalid guess. Returning to the casino.\n";
-        return;
-    }
+    validGuess = intCheck(playerGuess, 1, 7);
 
-    potato -= bet; //deduct bet from total potatoes//
+    potato -= validBet; //deduct bet from total potatoes//
 
     int diceRoll=rand()%6+1; //generate dice roll//
     cout<<"The dice rolls a "<<diceRoll<<".\n";
 
-    if (playerGuess==diceRoll){
-        int winnings=bet*6; //correct guess reward//
+    if (validGuess==diceRoll){
+        int winnings=validBet*6; //correct guess reward//
         cout<<"You guess correctly! You win "<<winnings<<" Potatoes!\n";
         potato += winnings;
     } else{
         cout<<"Sorry, better luck next time!\n";
     }
-    cin.ignore();
+    sleep_for(seconds(2));
 }
 
 //displays slot machine rsults//
@@ -479,6 +477,7 @@ void doTask(vector<string>& AllTasks, vector<int>& diff, vector<int>& status, in
     if (AllTasks.size() == 0)
     {
         cout << "There are no tasks to attempt. Please create a new task";
+        sleep_for(seconds(1));
         return;
     }
     string taskInput, statusInput;
@@ -486,6 +485,7 @@ void doTask(vector<string>& AllTasks, vector<int>& diff, vector<int>& status, in
     do
     {
         viewTasks(AllTasks, diff, status);
+        sleep_for(seconds(1));
         cout << "\nEnter the name of a task to attempt:\n";
         getline(cin, taskInput);
         for (int i = 0; i < AllTasks.size(); i++)
@@ -557,6 +557,7 @@ void doTask(vector<string>& AllTasks, vector<int>& diff, vector<int>& status, in
             }
         }
     }
+    sleep_for(seconds(2));
 }
 /* pseudocode/ideas
     this function is the core of the program, so these are some very rough ideas:
