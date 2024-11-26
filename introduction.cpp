@@ -53,6 +53,7 @@ int main() // (view stats, view completed tasks, [casino], shop, make a new task
     string newTask = "";
     do
     {
+        system("cls");
         menu();
         string menuNumber;
         getline(cin, menuNumber);
@@ -159,6 +160,7 @@ int ynCheck(string& input)
 }
 void viewStats(int numStats, int attributes[], int potato, string attNames[])
 {
+    system("cls");
     cout << "\nSTATS.\n";
     for (int i = 0; i < numStats; i++)
     {
@@ -170,6 +172,7 @@ void viewStats(int numStats, int attributes[], int potato, string attNames[])
 }
 void viewTasks(vector<string>& AllTasks, vector<int>& diff, vector<int>& status)
 {
+    system("cls");
     if (AllTasks.size() == 0)
     {
         cout << "\nThere are no tasks available. Please create a task.\n";
@@ -260,6 +263,7 @@ void displayShop(int& potato, int attributes[], int numStats)
     potion.cost = { 100 };
     potion.atk = { 0,0,0,0 }; potion.hp = { 0,0,0,0 }; potion.def = { 0,0,0,0 };
     string userChoice, weaponChoice;
+    system("cls");
     cout << "\nShop\n"
         << "Potatoes: " << potato << endl
         << "1. Weapons " << endl
@@ -270,7 +274,7 @@ void displayShop(int& potato, int attributes[], int numStats)
         << "Pick (1-5): ";
 
     getline(cin, userChoice); cout << endl;
-    int shopChoice = intCheck(userChoice, 1, 6);
+    int shopChoice = intCheck(userChoice, 1, 6); system("cls");
     switch (shopChoice)
     {
     case 1: buy(potato, shopChoice, weapon, attributes, numStats);
@@ -293,7 +297,7 @@ void buy(int& potato, int userChoice, item itemType, int attributes[], int numSt
     }
     cout << "5) Back\n";
     string userItemView, buyItem;
-    cout << "Which weapon would you like to buy? "; getline(cin, userItemView); cout << endl;
+    cout << "Which weapon would you like to buy? "; getline(cin, userItemView); cout << endl; system("cls");
     int userItemChoice = intCheck(userItemView, 1, 6);
     for (int i = 0; i < 5; i++)
     {
@@ -309,7 +313,7 @@ void buy(int& potato, int userChoice, item itemType, int attributes[], int numSt
             if (buyItem == "y") {
                 if (potato < itemType.cost[i]) {
                     cout << "You don't have enough money... womp womp\n";
-                    system("pause");
+                    system("\npause");
                     break;
                 }
                 cout << "You now have " << itemType.name[i] << "!" << endl;
@@ -318,7 +322,7 @@ void buy(int& potato, int userChoice, item itemType, int attributes[], int numSt
                 if (itemType.atk[i] != 0) attributes[0] += itemType.atk[i];
                 if (itemType.hp[i] != 0) attributes[1] += itemType.hp[i];
                 if (itemType.def[i] != 0) attributes[2] += itemType.def[i];// attribute 0 = atk, 1 = hp, 2 = def
-                system("pause");
+                system("\n\npause");
             }
         }
         else if (userItemChoice == 5) 
@@ -565,17 +569,24 @@ void adventure(int attributes[]) //Only need elements 0 and 2 for enemy
     system("cls");
     entity enemy;
     int playerAtk, playerDef, playerHp;
+    int enemyRandomizer;
     enemy.name = {"Slime", "Ajemo"}; enemy.atk = {10, 100}; enemy.hp = {100, 500};
-    
+
+    enemyRandomizer = rand() % 2;
+
     playerAtk = attributes[0]; playerDef = attributes[1]; playerHp = attributes[2];
 
-    cout << "Atk: " << playerAtk << endl << "Def: " << playerDef << endl << "Hp: " << playerHp << endl;
+    cout << "Atk: " << playerAtk << "\tDef: " << playerDef << "\tHp: " << playerHp << endl << endl;
 
-    cout << "\n\nGoing for an adventure eh?\n\n"; sleep_for(seconds(2));
-    system("cls");
+    cout << "You encountered: " << enemy.name[enemyRandomizer] << '!' << endl;
+    cout << "ATK: " << enemy.atk[enemyRandomizer] << "\tHP: " << enemy.hp[enemyRandomizer] << endl;
+    
+    system("pause");
+    // cout << "\n\nGoing for an adventure eh?\n\n"; sleep_for(seconds(2));
+    // system("cls");
 
-    cout << "Good luck!\n"; sleep_for(seconds(2)); system("cls");
-    cout << "Don't die"; sleep_for(seconds(1)); cout << '.'; sleep_for(seconds(1)); cout << '.'; sleep_for(seconds(1)); cout << '.';
-    cout << endl;
-    system("cls");
+    // cout << "Good luck!\n"; sleep_for(seconds(2)); system("cls");
+    // cout << "Don't die"; sleep_for(seconds(1)); cout << '.'; sleep_for(seconds(1)); cout << '.'; sleep_for(seconds(1)); cout << '.';
+    // cout << endl; sleep_for(seconds(3));
+    // system("cls");
 }
