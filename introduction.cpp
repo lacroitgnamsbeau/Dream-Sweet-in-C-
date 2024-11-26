@@ -131,6 +131,7 @@ int intCheck(string& input, int min, int max)
         else
         {
             cout << "Invalid input... Enter this value again. (" << min << "-" << max << ")\n";
+            cout << "Invalid input... Enter this value again. (" << min << "-" << max - 1 << ")\n";
             getline(cin, input);
         }
 
@@ -573,10 +574,18 @@ void adventure(int attributes[])
     using namespace chrono;
     using namespace std;
     using namespace this_thread;
+    system("cls");
 
     entity enemy;
     enemy.name = {"Slime", "Ajemo"}; enemy.atk = {10, 100}; enemy.hp = {100, 500};
 
     cout << "\n\nGoing for an adventure eh?\n\n"; 
 
+    sleep_for(seconds(1));
+    cout << "Good luck!\n";
+    sleep_for(seconds(1));
+    cout << "Don't die"; sleep_for(seconds(1)); cout << '.'; sleep_for(seconds(1)); cout << '.'; sleep_for(seconds(1)); cout << '.';
+    cout << endl;
+    system("pause");
+    system("cls");
 }
