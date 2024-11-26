@@ -130,7 +130,6 @@ int intCheck(string& input, int min, int max)
         }
         else
         {
-            cout << "Invalid input... Enter this value again. (" << min << "-" << max << ")\n";
             cout << "Invalid input... Enter this value again. (" << min << "-" << max - 1 << ")\n";
             getline(cin, input);
         }
@@ -571,9 +570,6 @@ void doTask(vector<string>& AllTasks, vector<int>& diff, vector<int>& status, in
 */
 void adventure(int attributes[])
 {
-    using namespace chrono;
-    using namespace std;
-    using namespace this_thread;
     system("cls");
 
     entity enemy;
