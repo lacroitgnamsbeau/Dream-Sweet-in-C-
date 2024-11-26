@@ -4,7 +4,11 @@
 #include <vector>
 #include <random>
 #include <time.h>
+#include <chrono>
+#include <thread>
 using namespace std;
+using namespace this_thread;
+using namespace chrono;
 
 struct item
 {
@@ -12,6 +16,12 @@ struct item
     vector<string>description;
     vector<int>cost;
     vector<int>atk, hp , def;
+};
+
+struct entity
+{
+    vector<string>name;
+    vector<int>atk, hp;
 };
 
 void viewStats(int numStats, int attributes[], int potato, string attNames[]);
@@ -26,7 +36,7 @@ void menu();
 void displaySlots(int slot1, int slot2, int slot3);
 /*vector<string> */void inventory(string& item); // just putting as void to avoid errors
 void doTask(vector<string>& AllTasks, vector<int>& diff, vector<int>& status, int& potato);
-void adventure();
+void adventure(int attributes[]);
 int intCheck(string& input, int min, int max);
 int ynCheck(string& input);// these definitions are subject to change, function types or arguments will probably change
 
@@ -67,7 +77,7 @@ int main() // (view stats, view completed tasks, [casino], shop, make a new task
         case 6: doTask(AllTasks, diff, status, potato);
             break;
 
-        case 7: adventure();
+        case 7: adventure(attributes);
             break;
 
         default:
@@ -120,7 +130,7 @@ int intCheck(string& input, int min, int max)
         }
         else
         {
-            cout << "Invalid input... Enter this value again. (" << min << "-" << max << ")\n";
+            cout << "Invalid input... Enter this value again. (" << min << "-" << max - 1 << ")\n";
             getline(cin, input);
         }
 
@@ -315,6 +325,7 @@ void buy(int& potato, int userChoice, item itemType, int attributes[], int numSt
         }
     }
 }
+
 void createTask(string& newtask, vector<string>& AllTasks, vector<int>& diff, vector<int>& status)
 {
     bool sure = 0;
@@ -557,7 +568,20 @@ void doTask(vector<string>& AllTasks, vector<int>& diff, vector<int>& status, in
             - success would gain money and/or buff attributes
 
 */
-void adventure()
+void adventure(int attributes[])
 {
-    cout << "adventure";
+    system("cls");
+
+    entity enemy;
+    enemy.name = {"Slime", "Ajemo"}; enemy.atk = {10, 100}; enemy.hp = {100, 500};
+
+    cout << "\n\nGoing for an adventure eh?\n\n"; 
+
+    sleep_for(seconds(1));
+    cout << "Good luck!\n";
+    sleep_for(seconds(1));
+    cout << "Don't die"; sleep_for(seconds(1)); cout << '.'; sleep_for(seconds(1)); cout << '.'; sleep_for(seconds(1)); cout << '.';
+    cout << endl;
+    system("pause");
+    system("cls");
 }
