@@ -236,8 +236,8 @@ void displayShop(int& potato, int attributes[], int numStats)
         "The Founder's Pen was said to contain the oldest knowledge known to man.\
         Some people believe that it has existed moments after the universe was created.\nATK increased by 1000. Monster will be stunned for 3 turns.\n",
     };
-    weapon.cost = { 0, 100, 500, 1000 };
-    weapon.atk = {0,30,100,1000}; weapon.hp = {0,0,0,0}; weapon.def = {0,0,0,0};
+    weapon.cost = { 0, 100, 200, 100 };
+    weapon.atk = {20, 40, 100, 1000}; weapon.hp = {0,0,0,0}; weapon.def = {0,0,0,0};
 
     item armor;
     armor.name = { "Pajamas", "Tin Can", "Steel Plate", "Paper"};
@@ -246,7 +246,7 @@ void displayShop(int& potato, int attributes[], int numStats)
                          "Very basic type of armor. Shiny and dependable!\n+100 DEF",
                          "The strongest material to have ever existed. It will protect you from fatal blows!\n+1000 DEF"};
     armor.cost = {20, 100, 500, 1000};
-    armor.atk = { 0,0,0,0 }; armor.hp = { 0,0,0,0 }; armor.def = { 1,50,100,1000 };
+    armor.atk = { 0,0,0,0 }; armor.hp = {0, 0, 0, 0}; armor.def = { 1,50,100,1000 };
 
     item artifact;
     artifact.name = { "Sharpener", "Reizer", "Knoife", "Just a line" };
@@ -371,8 +371,6 @@ void createTask(string& newtask, vector<string>& AllTasks, vector<int>& diff, ve
     sleep_for(seconds(1));
 }
 
-//mai started here//
-//Casino has multiple games//
 void casino(int &potato){
     int choice;
     do{
@@ -572,10 +570,13 @@ void adventure(int attributes[], int &potato) //Only need elements 0 and 2 for e
     string playerChoice;
     int playerAtk, playerDef, playerHp, playerChoiceInt;
     int enemyRandomizer;
-    enemy.name = {"Slime", "Ajemo"}; enemy.atk = {10, 30}; enemy.hp = {100, 500}; enemy.price = {40, 100};
+    enemy.name  = {"Slime", "Ajemo", "Louish"}; 
+    enemy.atk   = {10, 30, 50}; 
+    enemy.hp    = {100, 500, 1000}; 
+    enemy.price = {40, 100, 100};
 
 
-    enemyRandomizer = rand() % 2;
+    enemyRandomizer = rand() % 3;
 
     playerAtk = attributes[0]; playerDef = attributes[1]; playerHp = attributes[2];
 
@@ -598,25 +599,24 @@ void adventure(int attributes[], int &potato) //Only need elements 0 and 2 for e
             {
                 system("cls");
                 enemy.hp[enemyRandomizer] -= playerAtk;              
-                cout << "\n\n" << enemy.name[enemyRandomizer] << " retaliated and dealt " << enemy.atk[enemyRandomizer] << " damage!\n";
-                sleep_for(seconds(2));
+                cout << "\n" << enemy.name[enemyRandomizer] << " retaliated and dealt " << enemy.atk[enemyRandomizer] << " damage!\n\n";
+                system("pause");
                 playerHp -= enemy.atk[enemyRandomizer];
                     if (playerHp > 0) {
                         system("cls");
                         continue;
                     } else {
                         system("cls");
-                        cout << "\n\nYou have died :( Better luck next time!\n\n"; sleep_for(seconds(2));
-                        cout << "\n\nYou also lost " << potato * .20 << " Potatoes :p\n";
+                        cout << "\nYou have died :( Better luck next time!\n"; sleep_for(seconds(2));
+                        cout << "\nYou also lost " << potato * .20 << " Potatoes :p\n"; sleep_for(seconds(2));
                         potato -= potato * .20;
                         break;
                     }
             } else {
-                sleep_for(seconds(2));
                 system("cls");
                 cout << "\nYou won!\n\n"; system("pause");
                 system("cls");
-                cout << "\nYou also gained 500 Potatoes!\n\n"; system("pause");
+                cout << "\nYou also gained " << enemy.price[enemyRandomizer] <<  " Potatoes!\n\n"; system("pause");
                 potato += enemy.price[enemyRandomizer];
                 break;
             }
