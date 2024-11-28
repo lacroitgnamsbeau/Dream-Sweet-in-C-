@@ -21,7 +21,7 @@ struct item
 struct entity
 {
     vector<string>name;
-    vector<int>atk, hp;
+    vector<int>atk, hp, price;
 };
 
 void viewStats(int numStats, int attributes[], int potato, string attNames[]);
@@ -36,7 +36,7 @@ void menu();
 void displaySlots(int slot1, int slot2, int slot3);
 /*vector<string> */void inventory(string& item); // just putting as void to avoid errors
 void doTask(vector<string>& AllTasks, vector<int>& diff, vector<int>& status, int& potato);
-void adventure(int attributes[]);
+void adventure(int attributes[], int &potato);
 int intCheck(string& input, int min, int max);
 int ynCheck(string& input);// these definitions are subject to change, function types or arguments will probably change
 
@@ -45,7 +45,7 @@ int MAX_STAT = 1000;
 int main() // (view stats, view completed tasks, [casino], shop, make a new task, do a task)
 {
     const int numStats = 3; // these can be changed if want
-    int choice, potato = 0, attributes[numStats] = { 0 };
+    int choice, potato = 1000, attributes[numStats] = {0, 0, 100};
     string attNames[numStats] = { "ATK", "DEF", "HP" };
     vector<string> AllTasks, items;
     vector<int> diff; // AllTasks[0] will correlate with difficulty of the task diff[0] and completed[0]
@@ -79,7 +79,7 @@ int main() // (view stats, view completed tasks, [casino], shop, make a new task
         case 6: doTask(AllTasks, diff, status, potato);
             break;
 
-        case 7: adventure(attributes);
+        case 7: adventure(attributes, potato);
             break;
 
         default:
@@ -250,10 +250,10 @@ void displayShop(int& potato, int attributes[], int numStats)
 
     item artifact;
     artifact.name = { "Sharpener", "Reizer", "Knoife", "Just a line" };
-    artifact.description = { "When things get dull, you gotta make a point.\nAdds 100 ATK (One time use)",
-                            "There's not enough EDGE.\nAdds 50 ATK (Good for five adventures)",
-                            "They said never bring a gun to a knife fight... right?\nAdds 200 ATK (Permanent)",
-                            "It's just a line. Nothing more to it.\nAdds 100 HP (Permanent)" };
+    artifact.description = { "When things get dull, you gotta make a point.\nAdds 100 ATK",
+                            "There's not enough EDGE.\nAdds 50 ATK",
+                            "They said never bring a gun to a knife fight... right?\nAdds 200 ATK",
+                            "It's just a line. Nothing more to it.\nAdds 100 HP" };
     artifact.cost = { 50, 200, 1000, 1000 }; 
     artifact.atk = { 100,50,200,0 }; artifact.hp = { 0,0,0,100 }; weapon.def = { 0,0,0,0 };
 
@@ -318,7 +318,7 @@ void buy(int& potato, int userChoice, item itemType, int attributes[], int numSt
                 }
                 cout << "You now have " << itemType.name[i] << "!" << endl;
                 potato -= itemType.cost[i];
-                cout << "You now have: " << potato << " Potatoes";
+                cout << "You now have: " << potato << " Potatoes\n";
                 if (itemType.atk[i] != 0) attributes[0] += itemType.atk[i];
                 if (itemType.hp[i] != 0) attributes[1] += itemType.hp[i];
                 if (itemType.def[i] != 0) attributes[2] += itemType.def[i];// attribute 0 = atk, 1 = hp, 2 = def
@@ -564,24 +564,66 @@ void doTask(vector<string>& AllTasks, vector<int>& diff, vector<int>& status, in
     sleep_for(seconds(2));
 }
 
-void adventure(int attributes[]) //Only need elements 0 and 2 for enemy
+void adventure(int attributes[], int &potato) //Only need elements 0 and 2 for enemy
 {
     system("cls");
+    srand(time(NULL));
     entity enemy;
-    int playerAtk, playerDef, playerHp;
+    string playerChoice;
+    int playerAtk, playerDef, playerHp, playerChoiceInt;
     int enemyRandomizer;
-    enemy.name = {"Slime", "Ajemo"}; enemy.atk = {10, 100}; enemy.hp = {100, 500};
+    enemy.name = {"Slime", "Ajemo"}; enemy.atk = {10, 30}; enemy.hp = {100, 500}; enemy.price = {40, 100};
+
 
     enemyRandomizer = rand() % 2;
 
     playerAtk = attributes[0]; playerDef = attributes[1]; playerHp = attributes[2];
 
-    cout << "Atk: " << playerAtk << "\tDef: " << playerDef << "\tHp: " << playerHp << endl << endl;
-
     cout << "You encountered: " << enemy.name[enemyRandomizer] << '!' << endl;
-    cout << "ATK: " << enemy.atk[enemyRandomizer] << "\tHP: " << enemy.hp[enemyRandomizer] << endl;
-    
-    system("pause");
+    do
+    {
+        cout << "\nPlayer HP: " << playerHp << endl;
+        cout << enemy.name[enemyRandomizer] << " HP: " << enemy.hp[enemyRandomizer];
+        cout << "\n\nWhat do you want to do?\n\n";
+        cout << "1) Attack\n" << "2) Items\n" << "3) Run\n\n";
+        cout << "-> "; getline(cin, playerChoice); 
+        playerChoiceInt = intCheck(playerChoice, 1, 4);
+
+        if (playerChoiceInt == 1 || playerChoiceInt == 2)
+        {
+            system("cls");
+            cout << "\n\nYou dealt " << playerAtk << " damage to " << enemy.name[enemyRandomizer] << "!" << endl<< endl;
+            system("pause");
+            if ((enemy.hp[enemyRandomizer] - playerAtk) > 0)
+            {
+                system("cls");
+                enemy.hp[enemyRandomizer] -= playerAtk;              
+                cout << "\n\n" << enemy.name[enemyRandomizer] << " retaliated and dealt " << enemy.atk[enemyRandomizer] << " damage!\n";
+                sleep_for(seconds(2));
+                playerHp -= enemy.atk[enemyRandomizer];
+                    if (playerHp > 0) {
+                        system("cls");
+                        continue;
+                    } else {
+                        system("cls");
+                        cout << "\n\nYou have died :( Better luck next time!\n\n"; sleep_for(seconds(2));
+                        cout << "\n\nYou also lost " << potato * .20 << " Potatoes :p\n";
+                        potato -= potato * .20;
+                        break;
+                    }
+            } else {
+                sleep_for(seconds(2));
+                system("cls");
+                cout << "\nYou won!\n\n"; system("pause");
+                system("cls");
+                cout << "\nYou also gained 500 Potatoes!\n\n"; system("pause");
+                potato += enemy.price[enemyRandomizer];
+                break;
+            }
+        }
+
+    } while (playerChoiceInt != 3 && (enemy.hp[enemyRandomizer] > 0 && playerHp > 0)); 
+
     // cout << "\n\nGoing for an adventure eh?\n\n"; sleep_for(seconds(2));
     // system("cls");
 
