@@ -511,7 +511,24 @@ void doTask(vector<string>& AllTasks, vector<int>& diff, vector<int>& status, in
     if (statusInput == "success" || statusInput == "Success")
     {
         double seconds = (clock() - time) / double(CLOCKS_PER_SEC);
-        cout << "Nice job! You completed the task " << taskInput << " in " << seconds << " seconds!";
+        int minute = 0, hour = 0, day = 0;
+        if (seconds >= 60){
+            minute = seconds / 60;
+            seconds = seconds - (minute * 60);
+            if (minute >= 60) {
+                hour = minute / 60;
+                minute = minute - (hour * 60);
+                if (hour >= 24) {
+                day = hour / 24;
+                hour = hour - (day * 24);
+                }
+            }
+        }
+        cout << "Nice job! You completed the task " << taskInput << " in ";
+        if (day > 0) cout << day << " days ";
+        if (hour > 0) cout << hour << " hours ";
+        if (minute > 0) cout << minute << " minutes ";
+        cout << seconds << " seconds!";
         for (int i = 0; i < AllTasks.size(); i++)
         {
             if (taskInput == AllTasks[i])
