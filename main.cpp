@@ -203,8 +203,7 @@ void displayShop(int& potato, int attributes[], int numStats)
         "Everyone starts with a trusty weapon. Not you though. You get a wooden pencil :p\nDoesn't do anything special. It's just to attack\n",
         "It's just a pencil...A pencil made of metal... And it shoots graphite bullets...\nIncreases ATK by 30.\n",
         "Not only does this damage a monster, it can also slow them down and make them weaker!\nIncreases ATK by 100 and weakens the attack power of the monster.\n",
-        "The Founder's Pen was said to contain the oldest knowledge known to man.\
-        Some people believe that it has existed moments after the universe was created.\nATK increased by 1000. Monster will be stunned for 3 turns.\n",
+        "The Founder's Pen was said to contain the oldest knowledge known to man.\nSome people believe that it has existed moments after the universe was created.\nATK increased by 1000. Monster will be stunned for 3 turns.\n",
     };
     weapon.cost = { 0, 100, 200, 100 };
     weapon.atk = {20, 40, 100, 1000}; weapon.def = {0,0,0,0}; weapon.hp = {0,0,0,0};
@@ -566,9 +565,8 @@ void adventure(int attributes[], int &potato) //Only need elements 0 and 2 for e
 
     cout << "\n\nGoing for an adventure eh?\n\n"; sleep_for(seconds(2));
     system("cls");
-    cout << "Good luck!\n"; sleep_for(seconds(2)); system("cls");
-    cout << "Don't die"; sleep_for(seconds(1)); cout << '.'; sleep_for(seconds(1)); cout << '.'; sleep_for(seconds(1)); cout << '.';
-    cout << endl; sleep_for(seconds(3));
+    cout << "\n\nGood luck!\n"; sleep_for(seconds(2)); system("cls");
+    cout << "\n\nDon't die"; sleep_for(seconds(1)); cout << '.'; sleep_for(seconds(1)); cout << '.'; sleep_for(seconds(1)); cout << '.';
     system("cls");
 
 
