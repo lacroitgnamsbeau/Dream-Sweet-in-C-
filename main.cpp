@@ -139,9 +139,10 @@ int intCheck(string& input, int min, int max)
 }
 void ynCheck(string& input)
 {
-    bool valid = 1;
+    bool valid;
     do
     {
+        valid = 1;
         if (!(input.size() == 1))
         {
         valid = 0;
