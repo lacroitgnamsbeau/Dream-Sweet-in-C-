@@ -21,7 +21,7 @@ struct item
 struct entity
 {
     vector<string>name;
-    vector<int>atk, hp, price;
+    vector<int>atk, hp, reward;
 };
 
 void viewStats(int numStats, int attributes[], int potato, string attNames[]);
@@ -34,7 +34,6 @@ void playSlotMachine(int &potato);
 void playDiceRoll(int &potato);
 void menu();
 void displaySlots(int slot1, int slot2, int slot3);
-/*vector<string> */void inventory(string& item); // just putting as void to avoid errors
 void doTask(vector<string>& AllTasks, vector<int>& diff, vector<int>& status, int& potato);
 void adventure(int attributes[], int &potato);
 int intCheck(string& input, int min, int max);
@@ -195,35 +194,6 @@ void viewTasks(vector<string>& AllTasks, vector<int>& diff, vector<int>& status)
     }
 }
 
-/*vector<string> */void inventory(string& items) {
-    item weapon, armor, artifact;
-    vector<string>equipped;
-    weapon.name = { "Lapis", "Mecha Penn", "Penn", "Founder's Pen" };
-    weapon.description = {
-        "Everyone starts with a trusty weapon. Not you though. You get a wooden pencil :p\n",
-        "It's just a pencil...A pencil made of metal... And it shoots graphite bullets...\n",
-        "Not only does this damage a monster, it can also slow them down and make them weaker!\n",
-        "The Founder's Pen was said to contain the oldest knowledge known to man.\
-        Some people believe that it has existed moments after the universe was created.\n",
-    };
-    weapon.atk = { 0, 30, 100, 1000 };
-
-    for (int i = 0; i < weapon.name.size(); i++) {
-        if (weapon.name[i] == items) {
-            equipped.push_back(weapon.name[i]);
-        }
-    }
-
-    artifact.name = { "Sharpener", "Reizer", "Knoife", "Just a line\n" };
-    artifact.description = {
-        "When things get dull, you gotta make a point.\n",
-        "There's not enough EDGE.\n",
-        "They said never bring a gun to a knife fight... right?\n",
-        "It's just a line. Nothing more to it.\n"
-    };
-}
-
-
 void displayShop(int& potato, int attributes[], int numStats)
 {
     item weapon;
@@ -264,14 +234,14 @@ void displayShop(int& potato, int attributes[], int numStats)
     potion.atk = { 0,0,0,0 }; potion.def = { 0,0,0,0 }; potion.hp = { 0,0,0,0 };
     string userChoice, weaponChoice;
     system("cls");
-    cout << "\nShop\n"
-        << "Potatoes: " << potato << endl
-        << "1. Weapons " << endl
-        << "2. Armor " << endl
-        << "3. Artifacts " << endl
-        << "4. Potions/Consumables " << endl
-        << "5. Back " << endl
-        << "Pick (1-5): ";
+    cout << "Shop\n\n"
+         << "1. Weapons " << endl
+         << "2. Armor " << endl
+         << "3. Artifacts " << endl
+         << "4. Potions/Consumables " << endl
+         << "5. Back " << endl
+         << "\nPotatoes: " << potato << endl << endl
+         << "Pick (1-5): ";
 
     getline(cin, userChoice); cout << endl;
     int shopChoice = intCheck(userChoice, 1, 6); system("cls");
@@ -303,14 +273,13 @@ void buy(int& potato, int userChoice, item itemType, int attributes[], int numSt
     {
         if ((userItemChoice) == i + 1)
         {
-            cout << itemType.atk[i] << endl;
-            cout << itemType.name[i] << endl
-                << itemType.description[i] << endl
-                << "Cost: " << itemType.cost[i] << " Potatoes." << endl
-                << "Buy (y/n)?" << endl;
+            cout << itemType.name[i] << endl << endl
+                 << itemType.description[i] << endl
+                 << "Cost: " << itemType.cost[i] << " Potatoes." << endl
+                 << "Buy (y/n)?" << endl;
             getline(cin, buyItem);
             ynCheck(buyItem);
-            if (buyItem == "y") {
+            if (buyItem == "y" || buyItem == "Y") {
                 if (potato < itemType.cost[i]) {
                     cout << "You don't have enough money... womp womp\n";
                     system("\npause");
@@ -321,7 +290,7 @@ void buy(int& potato, int userChoice, item itemType, int attributes[], int numSt
                 cout << "You now have: " << potato << " Potatoes\n";
                 if (itemType.atk[i] != 0) attributes[0] += itemType.atk[i];
                 if (itemType.def[i] != 0) attributes[1] += itemType.def[i];
-                if (itemType.hp[i] != 0) attributes[2] += itemType.hp[i];// attribute 0 = atk, 1 = hp, 2 = def
+                if (itemType.hp[i] != 0) attributes[2] += itemType.hp[i];// attribute 0 = atk, 1 = def, 2 = hp
                 system("\n\npause");
             }
         }
@@ -336,10 +305,25 @@ void buy(int& potato, int userChoice, item itemType, int attributes[], int numSt
 void createTask(string& newtask, vector<string>& AllTasks, vector<int>& diff, vector<int>& status)
 {
     bool sure = 0;
+    bool valid = 0;
     do
     {
         cout << "\nPlease enter a new task.\n";
-        getline(cin, newtask);
+        do
+        {
+            getline(cin, newtask);
+            for (int i = 0; i < newtask.size(); i++)
+            {
+                if (!isspace(newtask[i])) {
+                    valid = 1;
+                    break;
+                }
+            }
+            if (!valid) {
+            cout << "You didn't type anything silly! Please enter a new task :)\n\n";   
+            }
+        } while (!(valid));
+        
         cout << "\nYou entered: " << newtask << endl;
         string yn;
         cout << "\nPlease confirm that this is what you wanted to enter. (y/n): ";
@@ -364,8 +348,8 @@ void createTask(string& newtask, vector<string>& AllTasks, vector<int>& diff, ve
     string assignDiff;
     cout << "Please assign a difficulty to this task. (1-100)\n";
     getline(cin, assignDiff);
-    intCheck(assignDiff, 1, MAX_STAT + 1);
-    diff.push_back(intCheck(assignDiff, 1, MAX_STAT + 1));
+    intCheck(assignDiff, 1, MAX_STAT/10 + 1);
+    diff.push_back(intCheck(assignDiff, 1, MAX_STAT/10 + 1));
     status.push_back(0); // 0 denotes an unfinished task, 1 a finished task, 2 a failed task
     cout << "The task has been created.";
     sleep_for(seconds(1));
@@ -570,15 +554,23 @@ void adventure(int attributes[], int &potato) //Only need elements 0 and 2 for e
     string playerChoice;
     int playerAtk, playerDef, playerHp, playerChoiceInt;
     int enemyRandomizer;
-    enemy.name  = {"Slime", "Ajemo", "Louish"}; 
-    enemy.atk   = {10, 30, 50}; 
-    enemy.hp    = {100, 500, 1000}; 
-    enemy.price = {40, 100, 100};
+    enemy.name   = {"Slime", "Ajemo", "Louish"}; 
+    enemy.atk    = {10, 30, 50}; 
+    enemy.hp     = {100, 500, 1000}; 
+    enemy.reward = {40, 100, 100};
 
 
     enemyRandomizer = rand() % 3;
 
     playerAtk = attributes[0]; playerDef = attributes[1]; playerHp = attributes[2];
+
+    cout << "\n\nGoing for an adventure eh?\n\n"; sleep_for(seconds(2));
+    system("cls");
+    cout << "Good luck!\n"; sleep_for(seconds(2)); system("cls");
+    cout << "Don't die"; sleep_for(seconds(1)); cout << '.'; sleep_for(seconds(1)); cout << '.'; sleep_for(seconds(1)); cout << '.';
+    cout << endl; sleep_for(seconds(3));
+    system("cls");
+
 
     cout << "You encountered: " << enemy.name[enemyRandomizer] << '!' << endl;
     do
@@ -616,19 +608,11 @@ void adventure(int attributes[], int &potato) //Only need elements 0 and 2 for e
                 system("cls");
                 cout << "\nYou won!\n\n"; system("pause");
                 system("cls");
-                cout << "\nYou also gained " << enemy.price[enemyRandomizer] <<  " Potatoes!\n\n"; system("pause");
-                potato += enemy.price[enemyRandomizer];
+                cout << "\nYou also gained " << enemy.reward[enemyRandomizer] <<  " Potatoes!\n\n"; system("pause");
+                potato += enemy.reward[enemyRandomizer];
                 break;
             }
         }
 
     } while (playerChoiceInt != 3 && (enemy.hp[enemyRandomizer] > 0 && playerHp > 0)); 
-
-    // cout << "\n\nGoing for an adventure eh?\n\n"; sleep_for(seconds(2));
-    // system("cls");
-
-    // cout << "Good luck!\n"; sleep_for(seconds(2)); system("cls");
-    // cout << "Don't die"; sleep_for(seconds(1)); cout << '.'; sleep_for(seconds(1)); cout << '.'; sleep_for(seconds(1)); cout << '.';
-    // cout << endl; sleep_for(seconds(3));
-    // system("cls");
 }
