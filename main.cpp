@@ -377,7 +377,8 @@ void casino(int &potato){
                 playDiceRoll(potato); //to play dice roll game
                 break;
             case 3:
-                cout<<"Leaving the casino. Come gamble again!\n";
+                cout <<"Leaving the casino. Come gamble again!\n";
+                system("pause");
                 break;
             default:
                 cout<<"Invalid choice. Please try again.\n";
@@ -392,9 +393,14 @@ void playSlotMachine(int &potato)
     string bet;
     int validBet;
     cout << "You have "<< potato <<" Potatoes.\n";
+    if (potato == 0)
+    {
+        cout << "No potatoes? Get out!\n\n";
+        return;
+    }
+
     cout << "Enter your bet: ";
     getline(cin, bet);
-
     validBet = intCheck(bet, 1, potato + 1);
 
     potato -= validBet; //subtract bet from total potatoes//
@@ -426,6 +432,12 @@ void playDiceRoll(int &potato){
     int validBet, validGuess;
     cout<<"\n---Dice Roll---\n";
     cout<<"You have "<< potato <<" Potatoes.\n";
+    if (potato == 0)
+    {
+        cout << "No potatoes? Get out!\n\n";
+        return;
+    }
+
     cout<<"Enter your bet: ";
     getline(cin, bet);
 
@@ -462,8 +474,8 @@ void doTask(vector<string>& AllTasks, vector<int>& diff, vector<int>& status, in
 {
     if (AllTasks.size() == 0)
     {
-        cout << "There are no tasks to attempt. Please create a new task";
-        sleep_for(seconds(1));
+        cout << "There are no tasks to attempt. Please create a new task\n\n";
+        system("pause");
         return;
     }
     string taskInput, statusInput;
@@ -560,7 +572,8 @@ void doTask(vector<string>& AllTasks, vector<int>& diff, vector<int>& status, in
             }
         }
     }
-    sleep_for(seconds(2));
+    cout << endl << endl;
+    system("pause");
 }
 
 void adventure(int attributes[], int &potato) //Only need elements 0 and 2 for enemy
