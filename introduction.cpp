@@ -237,16 +237,16 @@ void displayShop(int& potato, int attributes[], int numStats)
         Some people believe that it has existed moments after the universe was created.\nATK increased by 1000. Monster will be stunned for 3 turns.\n",
     };
     weapon.cost = { 0, 100, 200, 100 };
-    weapon.atk = {20, 40, 100, 1000}; weapon.hp = {0,0,0,0}; weapon.def = {0,0,0,0};
+    weapon.atk = {20, 40, 100, 1000}; weapon.def = {0,0,0,0}; weapon.hp = {0,0,0,0};
 
     item armor;
     armor.name = { "Pajamas", "Tin Can", "Steel Plate", "Paper"};
-    armor.description = {"Wear this to battle to have maximum comfort at the price of having little to no defense.\n+1 DEF",
-                         "It ain't much but it's honest work.\n+50 DEF",
-                         "Very basic type of armor. Shiny and dependable!\n+100 DEF",
-                         "The strongest material to have ever existed. It will protect you from fatal blows!\n+1000 DEF"};
+    armor.description = {"Wear this to battle to have maximum comfort at the price of having little to no defense.\n+1 HP",
+                         "It ain't much but it's honest work.\n+50 HP",
+                         "Very basic type of armor. Shiny and dependable!\n+100 HP",
+                         "The strongest material to have ever existed. It will protect you from fatal blows!\n+1000 HP"};
     armor.cost = {20, 100, 500, 1000};
-    armor.atk = { 0,0,0,0 }; armor.hp = {0, 0, 0, 0}; armor.def = { 1,50,100,1000 };
+    armor.atk = { 0,0,0,0 }; armor.def = { 0,0,0,0 };  armor.hp = {1, 50, 100, 1000};
 
     item artifact;
     artifact.name = { "Sharpener", "Reizer", "Knoife", "Just a line" };
@@ -254,14 +254,14 @@ void displayShop(int& potato, int attributes[], int numStats)
                             "There's not enough EDGE.\nAdds 50 ATK",
                             "They said never bring a gun to a knife fight... right?\nAdds 200 ATK",
                             "It's just a line. Nothing more to it.\nAdds 100 HP" };
-    artifact.cost = { 50, 200, 1000, 1000 }; 
-    artifact.atk = { 100,50,200,0 }; artifact.hp = { 0,0,0,100 }; weapon.def = { 0,0,0,0 };
+    artifact.cost = { 50, 200, 500, 500 }; 
+    artifact.atk = { 100,50,200,0 }; artifact.def = { 0,0,0,0 }; artifact.hp = { 0,0,0,100 };
 
     item potion;
     potion.name = { "Eraser" };
     potion.description = { "Cleanses impurities and heals injuries sustained from a monster's attack.\nHeals 30% of player's Max HP" };
     potion.cost = { 100 };
-    potion.atk = { 0,0,0,0 }; potion.hp = { 0,0,0,0 }; potion.def = { 0,0,0,0 };
+    potion.atk = { 0,0,0,0 }; potion.def = { 0,0,0,0 }; potion.hp = { 0,0,0,0 };
     string userChoice, weaponChoice;
     system("cls");
     cout << "\nShop\n"
@@ -320,8 +320,8 @@ void buy(int& potato, int userChoice, item itemType, int attributes[], int numSt
                 potato -= itemType.cost[i];
                 cout << "You now have: " << potato << " Potatoes\n";
                 if (itemType.atk[i] != 0) attributes[0] += itemType.atk[i];
-                if (itemType.hp[i] != 0) attributes[1] += itemType.hp[i];
-                if (itemType.def[i] != 0) attributes[2] += itemType.def[i];// attribute 0 = atk, 1 = hp, 2 = def
+                if (itemType.def[i] != 0) attributes[1] += itemType.def[i];
+                if (itemType.hp[i] != 0) attributes[2] += itemType.hp[i];// attribute 0 = atk, 1 = hp, 2 = def
                 system("\n\npause");
             }
         }
