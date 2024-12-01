@@ -37,7 +37,7 @@ void displaySlots(int slot1, int slot2, int slot3);
 void doTask(vector<string>& AllTasks, vector<int>& diff, vector<int>& status, int& potato);
 void adventure(int attributes[], int &potato);
 int intCheck(string& input, int min, int max);
-int ynCheck(string& input);// these definitions are subject to change, function types or arguments will probably change
+void ynCheck(string& input);// these definitions are subject to change, function types or arguments will probably change
 
 int MAX_STAT = 1000;
 
@@ -137,25 +137,25 @@ int intCheck(string& input, int min, int max)
 
     } while (!valid);
 }
-int ynCheck(string& input)
+void ynCheck(string& input)
 {
-    while (true)
+    bool valid = 1;
+    do
     {
         if (!(input.size() == 1))
         {
-            cout << "Invalid input, enter this again. (y/n) \n";
-            getline(cin, input);
+        valid = 0;
         }
         else if (!(input[0] == 'y' || input[0] == 'Y' || input[0] == 'n' || input[0] == 'N'))
         {
-            cout << "Invalid input, enter this again. (y/n) \n";
+        valid = 0;
+        }
+        if (!valid)
+        {
+            cout << "Invalid input, please enter this again (y/n).\n";
             getline(cin, input);
         }
-        else
-        {
-            return 0;
-        }
-    }
+    } while (!valid);
 }
 void viewStats(int numStats, int attributes[], int potato, string attNames[])
 {
