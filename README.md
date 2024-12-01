@@ -7,9 +7,9 @@ This will be our github repository for the project in CSCE A201.
 
 DUE DATES: 
   October 28 - Group Name and Project Idea
-  November 24 - Final Day to Submit
+  December 1 - Final Day to Submit
 
-I divided the flow of the project into 4 weeks.
+I divided the flow of the project into 5 weeks.
 
 Concept: Task-Track RPG
 
@@ -17,6 +17,7 @@ Basically the user will name their task, assign a level of difficulty on it (May
 Should we give the player a choice to pause and unpause the timer? Need some input on this.
 After that, we can input some base values on different difficulties of stages, bosses, etc.
 The task priority will serve as an additional multiplier for the player's base damage.
+
 Some weapon items could be:
   1. Pencil
   2. Sharpener
